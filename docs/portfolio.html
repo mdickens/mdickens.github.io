@@ -7,12 +7,18 @@
     <style>
         /* Basic Styling */
         body {
+            background-image: url('./b10.png');
+            background-size: cover; /* Ensures the image covers the entire viewport */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
+
+
             margin: 0;
             font-family: sans-serif;
         }
 
         .navbar {
-            background-color: #333;
+            background-color: rgba(51, 51, 51, 0.8); /* Add some transparency for better readability over the background */
             color: white;
             padding: 15px 20px;
             display: flex;
@@ -156,7 +162,7 @@
         });
     </script>
 
-    <div style="padding: 20px; text-align: center;">
+    <div style="padding: 20px; text-align: center; color: white;">
         <h1>Welcome to Marc Dickenson's Portfolio Page</h1>
         <p>"The greatest scientists are artists as well" - Albert Einstein</p>
     </div>
