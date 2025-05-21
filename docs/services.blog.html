@@ -140,6 +140,15 @@ a:active {
   color: #003366; /* An even darker blue when the link is being clicked (optional) */
 }
 
+
+/* The styles for the image itself */
+        .responsive-image-in-td {
+            max-width: 100%; /* Image will scale down if wider than its parent TD */
+            height: auto;    /* Maintains aspect ratio */
+            display: block;  /* Removes extra space below the image */
+            margin: 0 auto;  /* Centers the image horizontally within the TD */
+        }
+
     </style>
 </head>
 <body>
@@ -190,7 +199,7 @@ a:active {
     <tr>
     <td align="center"> 
     <p>Blog: 5/20/2025: Day two of Lego art project... what will it become?</p><br>
-	<img src=./IMG_1066.jpg >
+	<img src=./IMG_1066.jpg alt="A responsive image" class="responsive-image-in-td" >
     </td> 
     </tr>
     </table>
