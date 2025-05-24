@@ -4,6 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>marcdickenson.com</title>
+    <link rel="stylesheet" href="./styles.6.css">
+</head>
+<body>
+
+    <div class="site-wrapper">
+
+    <nav class="navbar">
+        <div class="logo"><a href="#">marcdickenson.com</a></div>
+        <ul class="menu">
+            <li><a href="./home.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+            <li><a href="./services.html">Services</a></li>
+            <li><a href="./portfolio.html">Portfolio</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+        </ul> 
+        <button class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </nav>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const menu = document.querySelector('.menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // Optional: Close menu when a link is clicked (for better UX on mobile)
+        document.querySelectorAll('.menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+    </script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>marcdickenson.com</title>
     <style>
         /* Basic Styling */
         body {
@@ -214,3 +260,21 @@ a:active {
 </body>
 </html>
 
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2025 marcdickenson.com. All rights reserved.</p>
+                <nav class="footer-nav">
+                    <a href="/privacy-policy.html">Privacy Policy</a> |
+                    <a href="/terms-of-service.html">Terms of Service</a> |
+                    <a href="/disclaimer.html">Disclaimer</a> |
+                    <a href="/contact.html">Contact Us</a>
+                </nav>
+                <p>My space to explore passions, document life, and share openly with the world.</p>
+                <div class="social-links">
+                    <a href="https://twitter.com/yourprofile" target="_blank">Twitter</a>
+                    <a href="https://www.linkedin.com/in/marc-dickenson-b1519b8" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </footer>
+</div> </body>
+</html>
