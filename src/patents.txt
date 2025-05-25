@@ -1,0 +1,181 @@
+Patents
+
+Document Redaction And Reconciliation
+
+10 March 2025 — United States of America
+
+12248590
+
+Document Redaction And Reconciliation
+
+13 January 2025 — China
+
+ZL202010526068.9
+
+User-created Financial Instruments
+
+14 October 2024 — United States of America
+
+12118812
+
+Document Redaction And Reconciliation
+
+29 April 2024 — United States of America
+
+11972004
+
+Voice Interactions In Noisy Environments
+
+19 June 2023 — United States of America
+
+11682416
+
+Input Entry Based On User Identity Validation
+
+15 August 2022 — United States of America
+
+11418502
+
+Safety Device For Assisting A User To Traverse A Structure
+
+13 June 2022 — United States of America
+
+11358031
+
+Security For Devices Connected To A Network
+
+11 October 2021 — United States of America
+
+11144640
+
+Security For Internet Of Things Devices
+
+27 September 2021 — United States of America
+
+11134092
+
+Securing Geo-physical Presence
+
+22 February 2021 — United States of America
+
+10931460
+
+Securing Geo-physical Presence
+
+9 November 2020 — United States of America
+
+10833869
+
+Enhancing Digital Facial Image Using Artificial Intelligence Enabled Digital Facial Image Generation
+
+20 April 2020 — United States of America
+
+10628931
+
+Mitigating Security Risks Utilizing Continuous Device Image Reload With Data Integrity
+
+13 April 2020 — United States of America
+
+10623432
+
+Devices Demise Actions And Notification
+
+6 April 2020 — United States of America
+
+10616037
+
+Security For Devices Connected To A Network
+
+6 January 2020 — United States of America
+
+10528728
+
+Personalized Augmented Reality Using Cognitive Analysis
+
+4 November 2019 — United States of America
+
+10467813
+
+Security For Devices Connected To A Network
+
+28 October 2019 — United States of America
+
+10460103
+
+Indirect Software Performance Analysis
+
+4 November 2014 — United States of America
+
+8881125
+
+Self-optimizable Code For Optimizing Execution Of Tasks And Allocation Of Memory In A Data Processing System
+
+11 September 2012 — United States of America
+
+8266606
+
+Memory Overflow Management
+
+12 July 2011 — United States of America
+
+7979661
+
+Compilation Error Isolation, Optimization And Resolution
+
+5 October 2010 — United States of America
+
+7810081
+
+Memory Leakage Management
+
+17 August 2010 — United States of America
+
+7779223
+
+Self-optimizable Code With Code Path Selection And Efficient Memory Allocation
+
+8 June 2009 — United States of America
+
+7546588
+
+Method, System And Computer Program Product For Recovery Of Formatting In Repair Of Bad Sectors In Flash Memory
+
+18 February 2009 — China
+
+ZL200610144658.5
+
+Method, System, And Computer Program Product For Recovery Of Formating In Repair Of Bad Sectors In Disk Drives
+
+18 February 2009 — China
+
+ZL200610128907.1
+
+Method, System And Computer Program Product For Recovery Of Formatting In Repair Of Bad Sectors In Flash Memory
+
+19 January 2009 — United States of America
+
+7480829
+
+Method, System, And Computer Program Product For Recovery Of Formating In Repair Of Bad Sectors In Disk Drives
+
+6 January 2009 — United States of America
+
+7475278
+
+Memory Leakage Management
+
+8 July 2008 — United States of America
+
+7398369
+
+Memory Overflow Management
+
+25 March 2008 — United States of America
+
+7350047
+
+Method, Data Processing System, And Computer Program Product For Collecting First Failure Data Capture Information
+
+11 December 2007 — United States of America
+
+7308609
