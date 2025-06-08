@@ -1,4 +1,4 @@
-/* Template: ./b18.png */
+/* Template: ./b20.png */
 
 footer {
     background-color: #333;
@@ -67,7 +67,7 @@ header nav a {
 	/* Styles for the footer itself (as shown in your previous example) */
 		/* Basic Styling */
 		html, body {
-            background-image: url('./b18.png');
+            background-image: url('./b20.png');
             background-size: cover; /* Ensures the image covers the entire viewport */
             background-repeat: no-repeat; /* Prevents the image from repeating */
             background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
@@ -221,54 +221,61 @@ a:active {
 
 
 
+/* Responsive Video Container */
+.video-container {
+    position: relative;
+    width: 100%; /* Take full width of parent (which is body here) */
+    max-width: 800px; /* Max width for the video player on large screens */
+    padding-bottom: 450px; /* Placeholder for height to maintain aspect ratio (e.g., 800px * (9/16) = 450px) */
+    /* Alternative for strict 16:9 aspect ratio regardless of max-width: */
+    /* padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 = 0.5625) */
+    
+    overflow: hidden;
+    background-color: black;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow */
+    margin-top: 50px; /* Example top margin */
+}
 
-        .video-container {
-            position: relative;
-            width: 640px; /* Fixed width for example */
-            height: 360px; /* Fixed height for 16:9 aspect ratio */
-            overflow: hidden;
-            background-color: black;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+.video-container video {
+    position: absolute; /* Position absolutely inside the container */
+    top: 0;
+    left: 0;
+    width: 100%; /* Fill the container */
+    height: 100%; /* Fill the container */
+    display: block;
+}
 
-        .video-container video {
-            width: 100%;
-            height: 100%;
-            display: block; /* Removes extra space below video */
-        }
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    font-size: 80px; /* Adjust as needed for button size */
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    width: 120px; /* Adjust as needed for button size */
+    height: 120px; /* Adjust as needed for button size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+    user-select: none;
+}
 
-        .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            
-            font-size: 80px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
-            border-radius: 50%; /* Circular shape */
-            width: 120px;
-            height: 120px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            z-index: 10; /* Ensures button is above video */
-            user-select: none; /* Prevent text selection */
-        }
+.play-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
 
-        .play-button:hover {
-            background-color: rgba(0, 0, 0, 0.8); /* Darken on hover */
-        }
-
-        /* You can hide default controls if you want your custom button to be the *only* control */
-        /*
-        .video-container video::-webkit-media-controls {
-            display: none !important;
-        }
-        .video-container video::-webkit-media-controls-enclosure {
-            display: none !important;
-        }
-        */
+/* Optional: Hide the default video controls initially if you only want the big button */
+/* Note: These might not work consistently across all browsers for hiding default controls */
+.video-container video::-webkit-media-controls {
+    display: none !important;
+}
+.video-container video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
