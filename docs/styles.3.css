@@ -3,7 +3,7 @@
   box-sizing: border-box;
 }
 
-/* Template: ./b23.png */
+/* Template: ./b31.png */
 
 footer {
     background-color: #333;
@@ -73,7 +73,7 @@ header nav a {
 		/* Basic Styling */
 		html, body {
 			overflow-x: hidden; /* Prevent horizontal scrolling */
-            background-image: url('./b23.png');
+            background-image: url('./b31.png');
             background-size: cover; /* Ensures the image covers the entire viewport */
             background-repeat: no-repeat; /* Prevents the image from repeating */
             background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
