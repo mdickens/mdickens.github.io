@@ -1,4 +1,4 @@
-/* Template: ./b6.png */
+/* Template: ./b9.png */
 
 footer {
     background-color: #333;
@@ -67,7 +67,7 @@ header nav a {
 	/* Styles for the footer itself (as shown in your previous example) */
 		/* Basic Styling */
 		html, body {
-            background-image: url('./b6.png');
+            background-image: url('./b9.png');
             background-size: cover; /* Ensures the image covers the entire viewport */
             background-repeat: no-repeat; /* Prevents the image from repeating */
             background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
