@@ -1,4 +1,4 @@
-/* Template: ./b9.png */
+/* Template: ./b28.png */
 
 footer {
     background-color: #333;
@@ -67,7 +67,7 @@ header nav a {
 	/* Styles for the footer itself (as shown in your previous example) */
 		/* Basic Styling */
 		html, body {
-            background-image: url('./b9.png');
+            background-image: url('./b28.png');
             background-size: cover; /* Ensures the image covers the entire viewport */
             background-repeat: no-repeat; /* Prevents the image from repeating */
             background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
@@ -218,3 +218,57 @@ a:active {
 .code-font {
   font-family: 'Courier New', Courier, monospace;
 }
+
+
+
+
+        .video-container {
+            position: relative;
+            width: 640px; /* Fixed width for example */
+            height: 360px; /* Fixed height for 16:9 aspect ratio */
+            overflow: hidden;
+            background-color: black;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            display: block; /* Removes extra space below video */
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            
+            font-size: 80px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+            border-radius: 50%; /* Circular shape */
+            width: 120px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 10; /* Ensures button is above video */
+            user-select: none; /* Prevent text selection */
+        }
+
+        .play-button:hover {
+            background-color: rgba(0, 0, 0, 0.8); /* Darken on hover */
+        }
+
+        /* You can hide default controls if you want your custom button to be the *only* control */
+        /*
+        .video-container video::-webkit-media-controls {
+            display: none !important;
+        }
+        .video-container video::-webkit-media-controls-enclosure {
+            display: none !important;
+        }
+        */
