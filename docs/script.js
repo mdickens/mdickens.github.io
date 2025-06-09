@@ -17,6 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
         	// Optional: Prevent body scrolling when menu is open
         	// body.style.overflowY = mobileMenu.classList.contains('active') ? 'hidden' : '';
     	});
+
+	    hamburger.addEventListener('scroll', function() {
+			console.log("Hamburger scrolled!"); // Check if click event fires
+            mobileMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+		});
     } else {
         console.error("ERROR: Could not find hamburger or mobile menu elements. Check IDs/classes in HTML.");
     }
