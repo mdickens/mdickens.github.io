@@ -1,4 +1,4 @@
-/* Template: ./b34.png */
+/* Template: ./b4.png */
 /* Add this at the very top of your CSS file */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -74,7 +74,7 @@ header nav a {
 		/* Basic Styling */
 		html, body {
 			overflow-x: hidden; /* Prevent horizontal scrolling */
-            background-image: url('./b34.png');
+            background-image: url('./b4.png');
             background-size: cover; /* Ensures the image covers the entire viewport */
             background-repeat: no-repeat; /* Prevents the image from repeating */
             background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
