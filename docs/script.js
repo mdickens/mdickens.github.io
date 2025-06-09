@@ -49,6 +49,16 @@ document.addEventListener('DOMContentLoaded', function() {
         lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
     });
 
+	const scrollableContainer = document.getElementById('main');
+	if (scrollableContainer) {
+    	scrollableContainer.addEventListener('scroll', function() {
+        console.log("Inner container scrolled!");
+        // Your scroll logic here
+                mobileMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+    	});
+	}
+
     // Optional: Close menu if a menu item is clicked
     mobileMenu.querySelectorAll('a').forEach(item => {
         item.addEventListener('click', function() {
