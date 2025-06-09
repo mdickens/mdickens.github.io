@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	console.log("DOMContentLoaded fired."); // Check if the event listener itself is working
    	console.log("Hamburger element:", hamburger); // Check if hamburger is found
    	console.log("Mobile menu element:", mobileMenu); // Check if mobileMenu is found
-   	console.log("main element:", main); // Check if hamburger is found
-   	console.log("site-div element:", site-div); // Check if hamburger is found
 
 	// Only proceed if elements are found
     if (hamburger && mobileMenu) {
@@ -64,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
         lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
     });
 
-	const scrollableContainer = document.getElementById('sitediv');
+	const scrollableContainer = document.getElementById('body');
 	if (scrollableContainer) {
     	scrollableContainer.addEventListener('scroll', function() {
         console.log("Inner container scrolled!");
