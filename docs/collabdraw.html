@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Drawing Game (MQTT)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        canvas {
+            border: 2px solid #3498db;
+            background-color: #fff;
+            cursor: crosshair;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .controls label {
+            font-weight: bold;
+        }
+        .controls input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        .controls button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .controls button:hover {
+            background-color: #c0392b;
+        }
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .instructions {
+            margin-top: 20px;
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            width: 80%;
+            max-width: 600px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Collaborative Drawing Game</h1>
+
+    <canvas id="drawingCanvas" width="800" height="600"></canvas>
+
+    <div class="controls">
+        <label for="colorPicker">Brush Color:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        <label for="lineThickness">Thickness:</label>
+        <input type="range" id="lineThickness" min="1" max="10" value="3">
+        <button id="clearCanvas">Clear Canvas</button>
+    </div>
+
+    <p class="status" id="mqttStatus">Connecting to MQTT Broker...</p>
+    <p class="status">Your drawing ID: <span id="drawingTopicDisplay">Loading...</span></p>
+
+    <div class="instructions">
+        <h3>How to Play:</h3>
+        <ol>
+            <li>Open this page in multiple browser tabs or on different devices.</li>
+            <li>Each instance will get the same unique "Drawing ID".</li>
+            <li>Draw on the canvas! Your strokes will appear on everyone else's canvas in real-time.</li>
+            <li>Change the brush color and thickness using the controls.</li>
+            <li>Click "Clear Canvas" to clear everyone's canvas.</li>
+            <li>**Important:** This uses a public test broker, so **do not draw anything sensitive!**</li>
+        </ol>
+    </div>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script>
+        // --- MQTT Configuration ---
+        const MQTT_BROKER_URL = 'wss://test.mosquitto.org:8081/mqtt'; // WebSockets over SSL
+        const BASE_TOPIC = 'drawing_game/collaborative_canvas/'; // Base topic for the game
+
+        // Generate a unique ID for this drawing session (or allow user to set one)
+        // For a true "game," all players must use the SAME drawingId.
+        // For a quick test, you can hardcode one, or dynamically generate.
+        // Let's generate one, and allow user to copy it.
+        let drawingId = 'default_room_123'; // Hardcoded for simplicity for initial testing
+        // You could use `Math.random().toString(36).substring(2, 8);` for truly unique rooms.
+        // For a collaborative game, all players need to agree on this ID.
+        // Let's make it a fixed one for easy collaboration.
+        const DRAWING_TOPIC = BASE_TOPIC + drawingId;
+
+        // --- HTML Elements ---
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('colorPicker');
+        const lineThicknessInput = document.getElementById('lineThickness');
+        const clearButton = document.getElementById('clearCanvas');
+        const mqttStatusSpan = document.getElementById('mqttStatus');
+        const drawingTopicDisplay = document.getElementById('drawingTopicDisplay');
+
+        // --- Drawing State Variables ---
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let currentColor = colorPicker.value;
+        let currentThickness = parseInt(lineThicknessInput.value);
+
+        // --- MQTT Client ---
+        let client;
+
+        // --- Initialization ---
+        function init() {
+            drawingTopicDisplay.textContent = DRAWING_TOPIC;
+            setupCanvasEvents();
+            setupControls();
+            connectMqtt();
+        }
+
+        function setupCanvasEvents() {
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing); // Stop drawing if mouse leaves canvas
+
+            // For touch devices
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Prevent scrolling
+                const touch = e.touches[0];
+                startDrawing({ offsetX: touch.clientX - canvas.offsetLeft, offsetY: touch.clientY - canvas.offsetTop });
+            });
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                draw({ offsetX: touch.clientX - canvas.offsetLeft, offsetY: touch.clientY - canvas.offsetTop });
+            });
+            canvas.addEventListener('touchend', stopDrawing);
+            canvas.addEventListener('touchcancel', stopDrawing);
+        }
+
+        function setupControls() {
+            colorPicker.addEventListener('input', (e) => {
+                currentColor = e.target.value;
+            });
+            lineThicknessInput.addEventListener('input', (e) => {
+                currentThickness = parseInt(e.target.value);
+            });
+            clearButton.addEventListener('click', () => {
+                clearCanvasLocally();
+                // Publish a clear message to all clients
+                if (client && client.connected) {
+                    client.publish(DRAWING_TOPIC, JSON.stringify({ type: 'clear' }), { qos: 0, retain: false });
+                }
+            });
+        }
+
+        function connectMqtt() {
+            mqttStatusSpan.textContent = "Connecting to MQTT Broker...";
+            client = mqtt.connect(MQTT_BROKER_URL);
+
+            client.on('connect', () => {
+                mqttStatusSpan.textContent = "Connected to MQTT Broker!";
+                client.subscribe(DRAWING_TOPIC, (err) => {
+                    if (!err) {
+                        console.log(`Subscribed to ${DRAWING_TOPIC}`);
+                    } else {
+                        console.error(`Subscription error: ${err}`);
+                    }
+                });
+            });
+
+            client.on('message', (topic, message) => {
+                try {
+                    const data = JSON.parse(message.toString());
+                    if (data.type === 'clear') {
+                        clearCanvasLocally();
+                    } else if (data.type === 'draw') {
+                        // Ensure it's not our own message to avoid echo drawing
+                        // (though with shared canvas, this is less critical)
+                        if (data.clientId !== client.options.clientId) { // Only if we assign client IDs
+                            drawLine(data.prevX, data.prevY, data.currX, data.currY, data.color, data.thickness);
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error parsing message:", e);
+                }
+            });
+
+            client.on('error', (err) => {
+                mqttStatusSpan.textContent = `MQTT Error: ${err.message}`;
+                console.error("MQTT Error:", err);
+                client.end(); // Attempt to disconnect on error
+            });
+
+            client.on('close', () => {
+                mqttStatusSpan.textContent = "Disconnected from MQTT Broker. Reconnecting...";
+                // Optionally add a reconnect logic here with a delay
+                // setTimeout(connectMqtt, 5000);
+            });
+        }
+
+        // --- Drawing Functions ---
+
+        function startDrawing(e) {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const currX = e.offsetX;
+            const currY = e.offsetY;
+
+            drawLine(lastX, lastY, currX, currY, currentColor, currentThickness);
+
+            // Publish the drawing coordinates
+            if (client && client.connected) {
+                const message = {
+                    type: 'draw',
+                    prevX: lastX,
+                    prevY: lastY,
+                    currX: currX,
+                    currY: currY,
+                    color: currentColor,
+                    thickness: currentThickness,
+                    // You might add a unique client ID here if you need to differentiate
+                    // client.options.clientId: client.options.clientId // this would need to be set on connect
+                };
+                client.publish(DRAWING_TOPIC, JSON.stringify(message), { qos: 0, retain: false });
+            }
+
+            [lastX, lastY] = [currX, currY];
+        }
+
+        function drawLine(x1, y1, x2, y2, color, thickness) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = thickness;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function clearCanvasLocally() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Run initialization when the DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
