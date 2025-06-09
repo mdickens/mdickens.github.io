@@ -17,6 +17,19 @@ document.addEventListener('DOMContentLoaded', function() {
         	// Optional: Prevent body scrolling when menu is open
         	// body.style.overflowY = mobileMenu.classList.contains('active') ? 'hidden' : '';
     	});
+		// Attach scroll listener
+        window.addEventListener('scroll', function() {
+            console.log("Window scrolled!"); // THIS IS THE KEY TEST: does this message appear?
+            const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (mobileMenu.classList.contains('active')) {
+                // ... (your scroll-to-close logic) ...
+				console.log("Hamburger scrolled!"); // Check if click event fires
+            	mobileMenu.classList.remove('active');
+            	hamburger.classList.remove('active');
+            }
+            lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+        });
 
 	    hamburger.addEventListener('scroll', function() {
 			console.log("Hamburger scrolled!"); // Check if click event fires
