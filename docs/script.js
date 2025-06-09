@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         	// body.style.overflowY = mobileMenu.classList.contains('active') ? 'hidden' : '';
     	});
 		// Attach scroll listener
-        window.addEventListener('scroll', function() {
+        hamburger.addEventListener('scroll', function() {
             console.log("Window scrolled!"); // THIS IS THE KEY TEST: does this message appear?
             const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
