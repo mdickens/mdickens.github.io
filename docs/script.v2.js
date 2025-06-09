@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
         lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // For Mobile or negative scrolling
     });
 
-	const scrollableContainer = document.getElementById('site-div');
+	const scrollableContainer = document.getElementById('sitediv');
 	if (scrollableContainer) {
     	scrollableContainer.addEventListener('scroll', function() {
         console.log("Inner container scrolled!");
