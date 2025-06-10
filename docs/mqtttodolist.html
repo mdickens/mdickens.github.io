@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT To-Do List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            background-color: #f7f9fc;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2.5em;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+        .input-area {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        #newTaskInput {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        #newTaskInput:focus {
+            border-color: #007bff;
+        }
+        #addTaskButton {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        #addTaskButton:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        #taskList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            background-color: #fdfdfd;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        .task-item:hover {
+            background-color: #f0f8ff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .task-content {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .task-text {
+            font-size: 1.1em;
+            margin-left: 10px;
+            flex-grow: 1;
+        }
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .task-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .task-actions .complete-btn {
+            color: #28a745;
+        }
+        .task-actions .delete-btn {
+            color: #dc3545;
+        }
+        .task-actions button:hover {
+            background-color: rgba(0,0,0,0.05);
+            transform: scale(1.1);
+        }
+        .status-area {
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: #555;
+            text-align: center;
+        }
+        .status-area strong {
+            color: #007bff;
+        }
+        .instructions {
+            margin-top: 30px;
+            background-color: #e9f5ff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            width: 90%;
+            max-width: 500px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #0056b3;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+        .instructions ol {
+            padding-left: 25px;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #aaa;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            background-color: #fff;
+            transition: all 0.2s ease;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        input[type="checkbox"]:checked::after {
+            content: '\2713'; /* Checkmark unicode character */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MQTT To-Do List</h1>
+
+    <div class="container">
+        <div class="input-area">
+            <input type="text" id="newTaskInput" placeholder="Add a new task...">
+            <button id="addTaskButton">Add Task</button>
+        </div>
+        <ul id="taskList">
+            </ul>
+    </div>
+
+    <div class="status-area">
+        <p id="mqttStatus">Connecting to MQTT Broker...</p>
+        <p>Your To-Do List ID: <strong id="todoListIdDisplay">Generating...</strong></p>
+        <p>Share this ID with others to collaborate on the same list.</p>
+    </div>
+
+    <div class="instructions">
+        <h3>How to Use:</h3>
+        <ol>
+            <li>**Get your List ID:** A unique ID is generated above.</li>
+            <li>**Share:** Open this page in multiple browser tabs/devices, or share the URL with others. **Ensure everyone uses the SAME "To-Do List ID" for collaboration.** You can manually change the `TODO_LIST_ID` in the JavaScript if you want a fixed room.</li>
+            <li>**Add Tasks:** Type into the input and click "Add Task."</li>
+            <li>**Manage Tasks:** Check the box to mark complete, click 'X' to delete.</li>
+            <li>**Real-time:** All changes will instantly reflect across all connected clients for that List ID.</li>
+            <li>**Important:** This uses a public test broker, so **do not add sensitive information!**</li>
+        </ol>
+    </div>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script>
+        // --- MQTT Configuration ---
+        const MQTT_BROKER_URL = 'wss://test.mosquitto.org:8081/mqtt'; // WebSockets over SSL
+        const BASE_TOPIC = 'mqtt_todo_app_collab_2025/'; // Base topic for the app
+
+        // Generate a random ID for this To-Do List instance
+        // In a real app, you might have a UI to let users create/join lists
+        let TODO_LIST_ID = window.location.hash.substring(1); // Get from URL hash if present
+        if (!TODO_LIST_ID) {
+            TODO_LIST_ID = Math.random().toString(36).substring(2, 10); // Generate if not in hash
+            window.location.hash = TODO_LIST_ID; // Add to URL for easy sharing
+        }
+
+        const TOPIC_ADD = `${BASE_TOPIC}${TODO_LIST_ID}/add`;
+        const TOPIC_COMPLETE = `${BASE_TOPIC}${TODO_LIST_ID}/complete`;
+        const TOPIC_DELETE = `${BASE_TOPIC}${TODO_LIST_ID}/delete`;
+        const TOPIC_SYNC_REQUEST = `${BASE_TOPIC}${TODO_LIST_ID}/sync_request`;
+        const TOPIC_SYNC_RESPONSE = `${BASE_TOPIC}${TODO_LIST_ID}/sync_response`;
+
+        // --- HTML Elements ---
+        const newTaskInput = document.getElementById('newTaskInput');
+        const addTaskButton = document.getElementById('addTaskButton');
+        const taskList = document.getElementById('taskList');
+        const mqttStatusSpan = document.getElementById('mqttStatus');
+        const todoListIdDisplay = document.getElementById('todoListIdDisplay');
+
+        // --- Application State ---
+        let tasks = []; // Array to hold task objects: { id: '...', text: '...', completed: false }
+        let client; // MQTT client instance
+        let clientId = `client-${Math.random().toString(36).substring(2, 9)}`; // Unique ID for this client
+
+        // --- Initialization ---
+        function init() {
+            todoListIdDisplay.textContent = TODO_LIST_ID;
+            setupEventListeners();
+            connectMqtt();
+        }
+
+        function setupEventListeners() {
+            addTaskButton.addEventListener('click', addTask);
+            newTaskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addTask();
+                }
+            });
+            taskList.addEventListener('click', handleTaskActions); // Event delegation
+        }
+
+        function connectMqtt() {
+            mqttStatusSpan.textContent = "Connecting to MQTT Broker...";
+            client = mqtt.connect(MQTT_BROKER_URL, { clientId: clientId });
+
+            client.on('connect', () => {
+                mqttStatusSpan.textContent = "Connected to MQTT Broker!";
+                // Subscribe to all relevant topics for this list ID
+                client.subscribe([TOPIC_ADD, TOPIC_COMPLETE, TOPIC_DELETE, TOPIC_SYNC_REQUEST, TOPIC_SYNC_RESPONSE], (err) => {
+                    if (!err) {
+                        console.log(`Subscribed to topics for list: ${TODO_LIST_ID}`);
+                        // When connected, request sync from other clients to get current list state
+                        client.publish(TOPIC_SYNC_REQUEST, JSON.stringify({ requesterId: clientId }), { qos: 0, retain: false });
+                    } else {
+                        console.error(`Subscription error: ${err}`);
+                        mqttStatusSpan.textContent = `Subscription Error: ${err.message}`;
+                    }
+                });
+            });
+
+            client.on('message', (topic, message) => {
+                try {
+                    const payload = JSON.parse(message.toString());
+                    console.log(`Received message on ${topic}:`, payload);
+
+                    if (topic === TOPIC_ADD) {
+                        handleAddTask(payload.taskId, payload.taskText, payload.isCompleted);
+                    } else if (topic === TOPIC_COMPLETE) {
+                        handleCompleteTask(payload.taskId, payload.isCompleted);
+                    } else if (topic === TOPIC_DELETE) {
+                        handleDeleteTask(payload.taskId);
+                    } else if (topic === TOPIC_SYNC_REQUEST) {
+                        // If another client requests sync, send our current state
+                        if (payload.requesterId !== clientId) { // Don't respond to our own request
+                            client.publish(TOPIC_SYNC_RESPONSE, JSON.stringify({ senderId: clientId, tasks: tasks }), { qos: 0, retain: false });
+                        }
+                    } else if (topic === TOPIC_SYNC_RESPONSE) {
+                        // If we received a sync response, update our tasks if we don't have any
+                        if (tasks.length === 0 && payload.tasks && payload.tasks.length > 0) {
+                            tasks = payload.tasks;
+                            renderTasks(); // Re-render the UI with synchronized tasks
+                            console.log("Synchronized tasks from another client.");
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error parsing message or handling payload:", e);
+                }
+            });
+
+            client.on('error', (err) => {
+                mqttStatusSpan.textContent = `MQTT Error: ${err.message}`;
+                console.error("MQTT Error:", err);
+            });
+
+            client.on('close', () => {
+                mqttStatusSpan.textContent = "Disconnected from MQTT Broker. Reconnecting...";
+                setTimeout(connectMqtt, 3000); // Attempt to reconnect after 3 seconds
+            });
+        }
+
+        // --- Task Management Functions ---
+
+        function addTask() {
+            const taskText = newTaskInput.value.trim();
+            if (taskText === '') return;
+
+            const newTaskId = `task-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+            const taskPayload = {
+                taskId: newTaskId,
+                taskText: taskText,
+                isCompleted: false
+            };
+
+            // Publish the add action
+            if (client && client.connected) {
+                client.publish(TOPIC_ADD, JSON.stringify(taskPayload), { qos: 0, retain: false }, (err) => {
+                    if (err) console.error("Publish add error:", err);
+                });
+            }
+
+            newTaskInput.value = ''; // Clear input field
+        }
+
+        function handleAddTask(id, text, completed) {
+            // Only add if not already present (prevents duplicates from sync or self-publish)
+            if (!tasks.some(task => task.id === id)) {
+                tasks.push({ id, text, completed });
+                renderTasks();
+            }
+        }
+
+        function handleTaskActions(e) {
+            const taskId = e.target.closest('.task-item')?.dataset.id;
+            if (!taskId) return;
+
+            if (e.target.classList.contains('complete-checkbox')) {
+                const isCompleted = e.target.checked;
+                const taskPayload = { taskId: taskId, isCompleted: isCompleted };
+                if (client && client.connected) {
+                    client.publish(TOPIC_COMPLETE, JSON.stringify(taskPayload), { qos: 0, retain: false }, (err) => {
+                        if (err) console.error("Publish complete error:", err);
+                    });
+                }
+            } else if (e.target.classList.contains('delete-btn')) {
+                const taskPayload = { taskId: taskId };
+                if (client && client.connected) {
+                    client.publish(TOPIC_DELETE, JSON.stringify(taskPayload), { qos: 0, retain: false }, (err) => {
+                        if (err) console.error("Publish delete error:", err);
+                    });
+                }
+            }
+        }
+
+        function handleCompleteTask(id, completed) {
+            const taskIndex = tasks.findIndex(task => task.id === id);
+            if (taskIndex !== -1) {
+                tasks[taskIndex].completed = completed;
+                renderTasks();
+            }
+        }
+
+        function handleDeleteTask(id) {
+            tasks = tasks.filter(task => task.id !== id);
+            renderTasks();
+        }
+
+        // --- UI Rendering ---
+
+        function renderTasks() {
+            taskList.innerHTML = ''; // Clear existing tasks
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.classList.add('task-item');
+                if (task.completed) {
+                    li.classList.add('completed');
+                }
+                li.dataset.id = task.id; // Store task ID on the element
+
+                li.innerHTML = `
+                    <div class="task-content">
+                        <input type="checkbox" class="complete-checkbox" ${task.completed ? 'checked' : ''}>
+                        <span class="task-text">${task.text}</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="delete-btn" title="Delete Task">X</button>
+                    </div>
+                `;
+                taskList.appendChild(li);
+            });
+        }
+
+        // Run initialization when the DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
