@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors (Multiplayer MQTT) - Marc Dickenson's Blog</title>
+    <link rel="stylesheet" href="./styles.7.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X3T91JZH6W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-X3T91JZH6W');
+    </script>
+</head>
+<body>
+
+    <div class="site-wrapper" id="sitediv">
+
+        <nav class="navbar">
+            <div class="logo"><a href="./home.html">marcdickenson.com</a></div>
+            <ul class="menu" id="mobileMenu">
+                <li><a href="./home.html">Home</a></li>
+                <li><a href="./about.html">About</a></li>
+                <li><a href="./services.html">Services</a></li>
+                <li><a href="./portfolio.html">Portfolio</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+            <button class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </nav>
+
+        <main class="site-content">
+            <div class="blog-header">
+                <h1>Welcome to Marc Dickenson's Blog Page</h1>
+                <p>"The greatest scientists are artists as well" - Albert Einstein</p>
+            </div>
+            <hr>
+            <div class="rps-container">
+                <h1>Rock, Paper, Scissors (Multiplayer)</h1>
+
+                <div class="score-board">
+                    <div class="score-box">
+                        <p>My Score</p>
+                        <div id="myScore" class="score-value">0</div>
+                    </div>
+                    <div class="score-box">
+                        <p>Opponent Score</p>
+                        <div id="opponentScore" class="score-value">0</div>
+                    </div>
+                </div>
+
+                <div class="choices">
+                    <button id="rock" class="choice-button">✊ Rock</button>
+                    <button id="paper" class="choice-button">✋ Paper</button>
+                    <button id="scissors" class="choice-button">✌️ Scissors</button>
+                </div>
+
+                <div class="results">
+                    <p class="result-message" id="resultMessage">Waiting for players...</p>
+                    <p class="player-choice" id="myChoiceDisplay"></p>
+                    <p class="computer-choice" id="opponentChoiceDisplay"></p>
+                </div>
+
+                <button id="resetButton" class="reset-button">Reset Game</button>
+
+                <p class="mqtt-status" id="mqttStatus">Connecting to MQTT Broker...</p>
+                <p class="mqtt-status">Game ID: <strong id="gameTopicDisplay">Loading...</strong></p>
+                <p class="mqtt-status">Your Player ID: <strong id="playerIDDisplay">Loading...</strong></p>
+
+                <div class="instructions">
+                    <h3>How to Play:</h3>
+                    <ol>
+                        <li>Open this page in two separate browser tabs/windows to play against yourself, or share the URL with a friend.</li>
+                        <li>This game uses MQTT for real-time multiplayer synchronization.</li>
+                        <li>Both players make their choice. The game calculates the round winner and updates scores.</li>
+                        <li>**Important:** This uses a public test broker. **Do not put any private or sensitive information here!**</li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2025 marcdickenson.com. All rights reserved.</p>
+                <nav class="footer-nav">
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vSCsvIeTzHrgsts1hZMI8sY8bSWb_jrz2RV21jrocLBnbygxCKZfFY1uuvHFKFmL8uBs0FGhbPwN7MI/pub" target="_blank">Privacy Policy</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vT639UOl-qnTGR8-84-I7nitsuehwalqYDn6IOfqJsISGcq2rPgnSdbMQsWkqvZyQPwpJHLHdXD4OAj/pub" target="_blank">Terms of Service</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vTTqiekzwzA2Asnr0yUYEIZcMCs--311vK-nRwcDBn5pH060xHpVUGlUlGGh3Hp7ysthNl_-9O3EGeX/pub" target="_blank">Disclaimer</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vTLoQcy3oEKzKckgfdiZCVz6dUjOltt-udyjOY-WYHRJJPXPrcePZ948Smp13QRhpgSVMo/pub" target="_blank">Credits</a> |
+                    <a href="mailto:your.email@example.com">Contact Us</a>
+                </nav>
+                <p>My space to explore passions, document life, and share openly with the world.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/marc-dickenson-b1519b8" alt="My Linked in Profile Page" target="_blank">L</a> |
+                    <a href="https://www.facebook.com/marc.dickenson1" alt="Facebook" target="_blank">F</a> |
+                    <a href="https://x.com/marcdickenson" alt="X" target="_blank">X</a> |
+                    <a href="https://github.com/mdickens/" alt="My Github Profile Page" target="_blank">G</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script>
+        // --- MQTT Configuration ---
+        const MQTT_BROKER_URL = 'wss://test.mosquitto.org:8081/mqtt'; // WebSockets over SSL
+
+        // Use a fixed game ID for multiplayer, or allow user input
+        // For demonstration, all clients opening this page will join this game.
+        const GAME_ID = 'marcdickenson_rps_multiplayer_game_v1';
+        const BASE_TOPIC = `rps_game/multiplayer/${GAME_ID}`;
+
+        const PLAYER_MOVE_TOPIC = `${BASE_TOPIC}/player_move`;
+        const GAME_STATE_TOPIC = `${BASE_TOPIC}/game_state`;
+        const RESET_GAME_TOPIC = `${BASE_TOPIC}/reset`;
+
+        // Unique ID for this specific player/browser instance
+        const PLAYER_ID = `player_${Math.random().toString(36).substring(2, 9)}`;
+
+        // --- HTML Elements ---
+        const myScoreSpan = document.getElementById('myScore');
+        const opponentScoreSpan = document.getElementById('opponentScore');
+        const resultMessage = document.getElementById('resultMessage');
+        const myChoiceDisplay = document.getElementById('myChoiceDisplay');
+        const opponentChoiceDisplay = document.getElementById('opponentChoiceDisplay');
+        const choiceButtons = document.querySelectorAll('.choice-button');
+        const resetButton = document.getElementById('resetButton');
+        const mqttStatusSpan = document.getElementById('mqttStatus');
+        const gameTopicDisplay = document.getElementById('gameTopicDisplay');
+        const playerIDDisplay = document.getElementById('playerIDDisplay');
+
+        // --- Game State Variables ---
+        let myScore = 0;
+        let opponentScore = 0;
+        const choices = ['rock', 'paper', 'scissors'];
+
+        // Store choices for the current round from all players
+        let currentRoundChoices = {}; // { playerId: choice, ... }
+        let currentRoundId = Date.now(); // Simple round ID
+
+        // --- MQTT Client ---
+        let client;
+
+        // --- Initialization ---
+        function init() {
+            gameTopicDisplay.textContent = GAME_ID;
+            playerIDDisplay.textContent = PLAYER_ID;
+            setupEventListeners();
+            connectMqtt();
+            updateScoreDisplay(); // Initialize score display
+        }
+
+        function setupEventListeners() {
+            choiceButtons.forEach(button => {
+                button.addEventListener('click', () => makeMove(button.id));
+            });
+            resetButton.addEventListener('click', resetGame);
+
+            // Navbar script
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.querySelector('.menu');
+
+            if (hamburger && menu) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    menu.classList.toggle('active');
+                });
+
+                document.querySelectorAll('.menu a').forEach(item => {
+                    item.addEventListener('click', () => {
+                        hamburger.classList.remove('active');
+                        menu.classList.remove('active');
+                    });
+                });
+            }
+        }
+
+        function connectMqtt() {
+            mqttStatusSpan.textContent = "Connecting to MQTT Broker...";
+            const clientId = `mqttjs_rps_multi_${PLAYER_ID}`; // Unique client ID for MQTT broker
+            client = mqtt.connect(MQTT_BROKER_URL, { clientId: clientId, clean: true });
+
+            client.on('connect', () => {
+                mqttStatusSpan.textContent = "Connected to MQTT Broker!";
+                console.log(`Connected to MQTT broker with client ID: ${clientId}`);
+
+                // Subscribe to game state topics
+                client.subscribe([
+                    GAME_STATE_TOPIC,
+                    PLAYER_MOVE_TOPIC, // Listen for all player moves
+                    RESET_GAME_TOPIC
+                ], { qos: 1 }, (err) => { // Use QoS 1 for reliable delivery
+                    if (!err) {
+                        console.log(`Subscribed to game topics for GAME ID: ${GAME_ID}`);
+                        // Request last retained state if this is a new connection
+                        client.publish(GAME_STATE_TOPIC, JSON.stringify({ requestState: true }), { qos: 0, retain: false }); // Dummy publish to trigger retained message
+                    } else {
+                        console.error(`Subscription error: ${err}`);
+                        mqttStatusSpan.textContent = `Subscription Error: ${err.message}`;
+                    }
+                });
+            });
+
+            client.on('message', (topic, message) => {
+                try {
+                    const msgData = JSON.parse(message.toString());
+                    // console.log(`Received message on ${topic}:`, msgData);
+
+                    if (topic === GAME_STATE_TOPIC) {
+                        if (msgData.requestState) return; // Ignore dummy request message
+
+                        myScore = msgData.playerScores[PLAYER_ID] || 0;
+                        // Find opponent's score. There might be multiple opponents.
+                        // For a simple 2-player game, find the other player's score.
+                        let opponentId = Object.keys(msgData.playerScores).find(id => id !== PLAYER_ID);
+                        opponentScore = msgData.playerScores[opponentId] || 0;
+
+                        // Display the winning message for this round
+                        resultMessage.textContent = msgData.roundResult;
+
+                        // Display choices
+                        const myLastChoice = msgData.roundChoices[PLAYER_ID];
+                        const opponentLastChoice = msgData.roundChoices[opponentId];
+
+                        myChoiceDisplay.textContent = myLastChoice ? `You chose: ${myLastChoice}` : '';
+                        opponentChoiceDisplay.textContent = opponentLastChoice ? `Opponent chose: ${opponentLastChoice}` : '';
+
+                        updateScoreDisplay();
+                        // Reset round choices after a state update
+                        currentRoundChoices = {};
+                        currentRoundId = Date.now(); // Start a new round ID
+                        choiceButtons.forEach(button => button.disabled = false); // Re-enable buttons
+                    } else if (topic === PLAYER_MOVE_TOPIC) {
+                        // Store the received move for the current round
+                        if (msgData.roundId === currentRoundId) {
+                            currentRoundChoices[msgData.playerId] = msgData.choice;
+                        } else {
+                            // If a new round has already started due to a faster client,
+                            // or if this message is from an old round, ignore or log.
+                            console.warn(`Received old or future move for round ${msgData.roundId}. Current round: ${currentRoundId}`);
+                            return; // Don't process out-of-round moves for calculation
+                        }
+
+
+                        // Check if all necessary moves are in for this round (for a 2-player game)
+                        const playersInRound = Object.keys(currentRoundChoices);
+                        if (playersInRound.length === 2 && playersInRound.includes(PLAYER_ID) && playersInRound.find(pId => pId !== PLAYER_ID)) {
+                            // Both players have made a move for this round.
+                            // The client that receives the SECOND move (i.e., detects length === 2)
+                            // is responsible for calculating and publishing the consolidated state.
+                            // This mitigates race conditions slightly, but a server is ideal.
+                            // Only calculate if the *incoming* message was the opponent's
+                            if (msgData.playerId !== PLAYER_ID) {
+                                calculateRoundResultAndPublish();
+                            } else {
+                                console.log("Waiting for opponent's move...");
+                            }
+                        } else if (playersInRound.length === 1 && playersInRound.includes(PLAYER_ID)) {
+                             resultMessage.textContent = "Waiting for opponent...";
+                             myChoiceDisplay.textContent = `You chose: ${currentRoundChoices[PLAYER_ID]}`;
+                        } else if (playersInRound.length === 1 && !playersInRound.includes(PLAYER_ID)) {
+                            resultMessage.textContent = "Opponent has chosen. Waiting for your move...";
+                            opponentChoiceDisplay.textContent = `Opponent chose: ${currentRoundChoices[playersInRound[0]]}`;
+                        }
+
+
+                    } else if (topic === RESET_GAME_TOPIC) {
+                        // Reset all scores and messages
+                        myScore = 0;
+                        opponentScore = 0;
+                        resultMessage.textContent = "Game reset! Waiting for players...";
+                        myChoiceDisplay.textContent = '';
+                        opponentChoiceDisplay.textContent = '';
+                        updateScoreDisplay();
+                        currentRoundChoices = {};
+                        currentRoundId = Date.now(); // Start a new round ID
+                        choiceButtons.forEach(button => button.disabled = false); // Re-enable buttons
+                    }
+                } catch (e) {
+                    console.error("Error parsing message or processing MQTT:", e);
+                }
+            });
+
+            client.on('error', (err) => {
+                mqttStatusSpan.textContent = `MQTT Error: ${err.message}`;
+                console.error("MQTT Error:", err);
+                client.end();
+            });
+
+            client.on('close', () => {
+                mqttStatusSpan.textContent = "Disconnected from MQTT Broker. Attempting to reconnect...";
+                console.log("MQTT client closed, reconnecting...");
+                setTimeout(connectMqtt, 3000);
+            });
+
+            client.on('offline', () => {
+                mqttStatusSpan.textContent = "MQTT Client went offline.";
+                console.log("MQTT client offline.");
+            });
+        }
+
+        // --- Game Logic ---
+
+        function makeMove(playerChoice) {
+            // Disable buttons temporarily to prevent multiple moves in one round
+            choiceButtons.forEach(button => button.disabled = true);
+
+            // Publish player's choice
+            if (client && client.connected) {
+                const moveData = {
+                    playerId: PLAYER_ID,
+                    roundId: currentRoundId,
+                    choice: playerChoice
+                };
+                client.publish(PLAYER_MOVE_TOPIC, JSON.stringify(moveData), { qos: 1, retain: false }, (err) => {
+                    if (err) console.error("Publish player move error:", err);
+                    else {
+                        console.log(`Published my move: ${playerChoice}`);
+                        // Store own choice locally immediately for display
+                        currentRoundChoices[PLAYER_ID] = playerChoice;
+                        myChoiceDisplay.textContent = `You chose: ${playerChoice}`;
+                        resultMessage.textContent = "Waiting for opponent...";
+                    }
+                });
+            } else {
+                 console.warn("MQTT client not connected. Move not published.");
+                 alert("MQTT not connected. Cannot make a move.");
+                 choiceButtons.forEach(button => button.disabled = false); // Re-enable if not connected
+            }
+        }
+
+        // This function is called by the client that detects two moves
+        function calculateRoundResultAndPublish() {
+            // Get player IDs and their choices
+            const playerIds = Object.keys(currentRoundChoices);
+            if (playerIds.length < 2) {
+                console.warn("Not enough choices to calculate round result.");
+                return;
+            }
+
+            const p1Id = playerIds[0];
+            const p2Id = playerIds[1];
+            const p1Choice = currentRoundChoices[p1Id];
+            const p2Choice = currentRoundChoices[p2Id];
+
+            let roundWinnerId = null;
+            let roundResultMessage = "It's a Tie!";
+
+            if (p1Choice !== p2Choice) {
+                if (
+                    (p1Choice === 'rock' && p2Choice === 'scissors') ||
+                    (p1Choice === 'paper' && p2Choice === 'rock') ||
+                    (p1Choice === 'scissors' && p2Choice === 'paper')
+                ) {
+                    roundWinnerId = p1Id;
+                } else {
+                    roundWinnerId = p2Id;
+                }
+            }
+
+            // Update scores based on the current round's winner
+            if (roundWinnerId === PLAYER_ID) {
+                myScore++;
+                roundResultMessage = "You Win!";
+            } else if (roundWinnerId !== null) { // Opponent won
+                opponentScore++;
+                roundResultMessage = "Opponent Wins!";
+            } else {
+                roundResultMessage = "It's a Tie!";
+            }
+
+
+            // Prepare consolidated game state to publish
+            const gameState = {
+                playerScores: {
+                    [PLAYER_ID]: myScore, // My score for this player
+                    [playerIds.find(id => id !== PLAYER_ID)]: opponentScore // Opponent's score
+                },
+                roundResult: roundResultMessage,
+                roundChoices: {
+                    [p1Id]: p1Choice,
+                    [p2Id]: p2Choice
+                },
+                roundId: currentRoundId, // Confirm which round this state is for
+                lastUpdatedBy: PLAYER_ID // For debugging
+            };
+
+            // Publish the consolidated game state with retain flag
+            if (client && client.connected) {
+                client.publish(GAME_STATE_TOPIC, JSON.stringify(gameState), { qos: 1, retain: true }, (err) => {
+                    if (err) console.error("Publish consolidated game state error:", err);
+                    else console.log("Published consolidated game state.");
+                    // Buttons will be re-enabled when the GAME_STATE_TOPIC message is received and processed.
+                });
+            } else {
+                console.warn("MQTT client not connected. Game state not published.");
+                choiceButtons.forEach(button => button.disabled = false); // Re-enable even if not published
+            }
+        }
+
+        function updateScoreDisplay() {
+            myScoreSpan.textContent = myScore;
+            opponentScoreSpan.textContent = opponentScore;
+        }
+
+        function resetGame() {
+            // Publish reset command to MQTT with retain flag
+            if (client && client.connected) {
+                client.publish(RESET_GAME_TOPIC, JSON.stringify({ action: 'reset' }), { qos: 1, retain: true }, (err) => {
+                    if (err) console.error("Publish reset error:", err);
+                    else console.log("Published reset command.");
+                    // After publishing reset, locally apply it (it will also come back via subscription)
+                    myScore = 0;
+                    opponentScore = 0;
+                    resultMessage.textContent = "Game reset! Waiting for players...";
+                    myChoiceDisplay.textContent = '';
+                    opponentChoiceDisplay.textContent = '';
+                    updateScoreDisplay();
+                    currentRoundChoices = {};
+                    currentRoundId = Date.now();
+                    choiceButtons.forEach(button => button.disabled = false);
+                });
+            } else {
+                // If not connected, just reset locally
+                myScore = 0;
+                opponentScore = 0;
+                resultMessage.textContent = "Game reset! Waiting for players...";
+                myChoiceDisplay.textContent = '';
+                opponentChoiceDisplay.textContent = '';
+                updateScoreDisplay();
+                currentRoundChoices = {};
+                currentRoundId = Date.now();
+                choiceButtons.forEach(button => button.disabled = false);
+                console.warn("MQTT client not connected. Game reset locally only.");
+            }
+        }
+
+        // Run initialization when the DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
