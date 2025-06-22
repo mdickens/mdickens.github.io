@@ -1,4 +1,4 @@
-/* Template: ./b1.png */
+/* Template: ./b23.png */
 /* Add this at the very top of your CSS file */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -74,7 +74,7 @@ header nav a {
 		/* Basic Styling */
 		html, body {
 			overflow-x: hidden; /* Prevent horizontal scrolling */
-            background-image: url('./b1.png');
+            background-image: url('./b23.png');
             background-size: cover; /* Ensures the image covers the entire viewport */
             background-repeat: no-repeat; /* Prevents the image from repeating */
             background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
@@ -348,3 +348,98 @@ a:active {
             margin-bottom: 5px;
         }
 
+
+
+
+
+
+.gemini-text-container {
+    /* Container for the text, providing padding and rounded corners */
+    background: linear-gradient(135deg, #2b2b4d, #1a1a2e); /* Subtle gradient background */
+    padding: 40px 60px; /* Ample padding */
+    border-radius: 20px; /* Nicely rounded corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Soft, deep shadow */
+    text-align: center; /* Center the text within the container */
+    max-width: 90vw; /* Responsive width */
+    position: relative; /* For pseudo-elements or absolute positioning */
+    overflow: hidden; /* Clip gradient or shadow effects */
+}
+
+.gemini-font {
+    /* Main styling for the "Gemini font" text */
+    font-family: 'Inter', sans-serif; /* Explicitly set font */
+    font-size: 4.5em; /* Large, impactful text */
+    font-weight: 900; /* Extra bold */
+    line-height: 1.2; /* Good line spacing */
+    letter-spacing: -0.03em; /* Slightly tighter letter spacing for modern look */
+    color: #ffffff; /* Default white color for fallback */
+
+    /* Apply a vibrant gradient to the text itself */
+    background: linear-gradient(45deg, #8a2be2, #00ffff, #00bfff); /* Violet, Cyan, Deep Sky Blue */
+    -webkit-background-clip: text; /* Clip background to text shape (for WebKit browsers) */
+    -webkit-text-fill-color: transparent; /* Make text transparent to show clipped background */
+    background-clip: text; /* Standard property */
+    text-fill-color: transparent; /* Standard property */
+
+    /* Add a subtle text shadow for depth */
+    text-shadow: 0 5px 15px rgba(138, 43, 226, 0.5), /* Violet shadow */
+                 0 0 20px rgba(0, 255, 255, 0.3); /* Cyan glow */
+
+    transition: all 0.4s ease-in-out; /* Smooth transition for hover effects */
+    cursor: default; /* Indicate it's not clickable */
+}
+
+.gemini-font:hover {
+    /* Hover effect for a dynamic feel */
+    transform: scale(1.02); /* Slightly enlarge the text */
+    text-shadow: 0 8px 25px rgba(138, 43, 226, 0.7), /* Stronger violet shadow */
+                 0 0 30px rgba(0, 255, 255, 0.5); /* Stronger cyan glow */
+    background: linear-gradient(45deg, #9b4dff, #33ffff, #33ccee); /* Slightly brighter gradient on hover */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+/* Optional: Add a subtle animation for background elements or a glow */
+.gemini-text-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+    animation: rotateBackground 20s linear infinite; /* Slow rotation animation */
+    z-index: -1; /* Place behind content */
+}
+
+@keyframes rotateBackground {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .gemini-font {
+        font-size: 2.5em; /* Smaller font size for mobile */
+        letter-spacing: -0.02em;
+    }
+    .gemini-text-container {
+        padding: 30px 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gemini-font {
+        font-size: 1.8em; /* Even smaller for very small screens */
+    }
+    .gemini-text-container {
+        padding: 20px 30px;
+        border-radius: 15px;
+    }
+}
