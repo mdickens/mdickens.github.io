@@ -1,4 +1,4 @@
-/* Template: ./b29.png */
+/* Template: ./b12.png */
 /* Add this at the very top of your CSS file */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -74,7 +74,7 @@ header nav a {
 		/* Basic Styling */
 		html, body {
 			overflow-x: hidden; /* Prevent horizontal scrolling */
-            background-image: url('./b29.png');
+            background-image: url('./b12.png');
             background-size: cover; /* Ensures the image covers the entire viewport */
             background-repeat: no-repeat; /* Prevents the image from repeating */
             background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
@@ -441,3 +441,26 @@ a:active {
     }
 }
 
+
+
+  /* Custom CSS to ensure perfect circle and image fitting */
+        .circular-image-container {
+            width: 150px;   /* Define a fixed width */
+            height: 150px;  /* Define a fixed height, making it a perfect square */
+            overflow: hidden; /* Hide anything outside the rounded border */
+            border-radius: 50%; /* This is the magic for the circle */
+            display: flex; /* Use flexbox to center the image if needed */
+            justify-content: center; /* Center image horizontally */
+            align-items: center; /* Center image vertically */
+            background-color: #e0e0e0; /* Placeholder background if image loads slowly */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        .circular-image {
+            width: 100%; /* Make the image take 100% width of its container */
+            height: 100%; /* Make the image take 100% height of its container */
+            object-fit: cover; /* This is crucial: scales the image to cover the area,
+                                   cropping if necessary, without distorting aspect ratio. */
+            border-radius: 50%; /* Apply border-radius directly to the image too,
+                                   though overflow: hidden on parent is more effective */
+        }
