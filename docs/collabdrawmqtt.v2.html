@@ -65,34 +65,34 @@
 <div class="gemini-text-container">
   <h1 class="gemini-font">MQTT: A Lightweight Messaging Protocol for IoT</h1>
 
-  <p><strong>MQTT (Message Queuing Telemetry Transport)</strong> is a lightweight, publish-subscribe network protocol that transports messages between devices. It's specifically designed for scenarios where devices have limited resources or operate over unreliable networks, making it ideal for **Internet of Things (IoT)** applications, mobile communication, and similar constrained environments.</p>
+  <p class="gemini-fontclass="gemini-font><strong>MQTT (Message Queuing Telemetry Transport)</strong> is a lightweight, publish-subscribe network protocol that transports messages between devices. It's specifically designed for scenarios where devices have limited resources or operate over unreliable networks, making it ideal for **Internet of Things (IoT)** applications, mobile communication, and similar constrained environments.</p>
 
-  <h2>Key Concepts of MQTT:</h2>
+  <h2 class="gemini-font">Key Concepts of MQTT:</h2>
 
   <ul>
-    <li><strong>Publish/Subscribe Model:</strong> Unlike direct peer-to-peer communication, MQTT uses a publish/subscribe approach. Clients don't communicate directly; instead, they **publish** messages to a central **broker**, and other clients **subscribe** to specific "topics" on that broker to receive those messages. This decouples senders from receivers, boosting scalability and flexibility.</li>
-    <li><strong>MQTT Broker:</strong> The broker is the heart of an MQTT system. It receives all messages from publishers, filters them by topic, and then efficiently forwards them to all relevant subscribed clients. The broker manages client connections, authentication, authorization, and message routing.</li>
-    <li><strong>Topics:</strong> Messages are organized and delivered based on **topics**, which are hierarchical strings (e.g., <code>home/livingroom/temperature</code>, <code>sensors/plant1/moisture</code>). Clients subscribe to topics they're interested in, and the broker delivers messages published to those topics. For added flexibility, wildcards can be used in subscriptions (e.g., <code>home/+/temperature</code> to get temperature from all rooms, or <code>sensors/#</code> for all sensor data).</li>
-    <li><strong>Clients:</strong> Any device or application that connects to the MQTT broker is considered an **MQTT client**. This could range from an IoT sensor to a mobile app or a server application. Clients can act as publishers (sending messages), subscribers (receiving messages), or both.</li>
-    <li><strong>Quality of Service (QoS):</strong> MQTT offers three levels of QoS to manage message delivery reliability:
+    <li class="gemini-font"><strong>Publish/Subscribe Model:</strong> Unlike direct peer-to-peer communication, MQTT uses a publish/subscribe approach. Clients don't communicate directly; instead, they **publish** messages to a central **broker**, and other clients **subscribe** to specific "topics" on that broker to receive those messages. This decouples senders from receivers, boosting scalability and flexibility.</li>
+    <li class="gemini-font"><strong>MQTT Broker:</strong> The broker is the heart of an MQTT system. It receives all messages from publishers, filters them by topic, and then efficiently forwards them to all relevant subscribed clients. The broker manages client connections, authentication, authorization, and message routing.</li>
+    <li class="gemini-font"><strong>Topics:</strong> Messages are organized and delivered based on **topics**, which are hierarchical strings (e.g., <code>home/livingroom/temperature</code>, <code>sensors/plant1/moisture</code>). Clients subscribe to topics they're interested in, and the broker delivers messages published to those topics. For added flexibility, wildcards can be used in subscriptions (e.g., <code>home/+/temperature</code> to get temperature from all rooms, or <code>sensors/#</code> for all sensor data).</li>
+    <li class="gemini-font"><strong>Clients:</strong> Any device or application that connects to the MQTT broker is considered an **MQTT client**. This could range from an IoT sensor to a mobile app or a server application. Clients can act as publishers (sending messages), subscribers (receiving messages), or both.</li>
+    <li class="gemini-font"><strong>Quality of Service (QoS):</strong> MQTT offers three levels of QoS to manage message delivery reliability:
       <ul>
-        <li><strong>QoS 0 (At Most Once):</strong> Messages are delivered at most once; they might be lost. This is the fastest but least reliable.</li>
-        <li><strong>QoS 1 (At Least Once):</strong> Messages are guaranteed to be delivered at least once, though duplicates may occasionally occur.</li>
-        <li><strong>QoS 2 (Exactly Once):</strong> Messages are guaranteed to be delivered exactly once. This is the slowest but most reliable option.</li>
+        <li class="gemini-font"><strong>QoS 0 (At Most Once):</strong> Messages are delivered at most once; they might be lost. This is the fastest but least reliable.</li>
+        <li class="gemini-font"><strong>QoS 1 (At Least Once):</strong> Messages are guaranteed to be delivered at least once, though duplicates may occasionally occur.</li>
+        <li class="gemini-font"><strong>QoS 2 (Exactly Once):</strong> Messages are guaranteed to be delivered exactly once. This is the slowest but most reliable option.</li>
       </ul>
     </li>
-    <li><strong>Retained Messages:</strong> When a publisher sends a message with the "retain" flag enabled, the broker stores the most recent message for that topic. New subscribers to that topic immediately receive this retained message, providing them with the latest state information.</li>
-    <li><strong>Last Will and Testament (LWT):</strong> Clients can configure a "Last Will and Testament" message when connecting to the broker. If the client disconnects unexpectedly, the broker automatically publishes this message to a predefined topic, alerting other devices about the client's absence.</li>
+    <li class="gemini-font"><strong>Retained Messages:</strong> When a publisher sends a message with the "retain" flag enabled, the broker stores the most recent message for that topic. New subscribers to that topic immediately receive this retained message, providing them with the latest state information.</li>
+    <li class="gemini-font"><strong>Last Will and Testament (LWT):</strong> Clients can configure a "Last Will and Testament" message when connecting to the broker. If the client disconnects unexpectedly, the broker automatically publishes this message to a predefined topic, alerting other devices about the client's absence.</li>
   </ul>
 
-  <h2>Why MQTT is Popular for IoT:</h2>
+  <h2 class="gemini-font">Why MQTT is Popular for IoT:</h2>
   <ul>
-    <li><strong>Lightweight:</strong> It has a small code footprint and consumes minimal network bandwidth.</li>
-    <li><strong>Efficient:</strong> Optimized for low-power devices and environments with less reliable network connections.</li>
-    <li><strong>Scalable:</strong> The publish/subscribe model easily accommodates a growing number of connected devices.</li>
-    <li><strong>Simple to Implement:</strong> Relatively straightforward to integrate into various hardware and software platforms.</li>
-    <li><strong>Robust:</strong> Features like QoS, retained messages, and LWT enhance its reliability.</li>
-    <li><strong>Open Standard:</strong> As an OASIS standard, it promotes broad interoperability among different systems.</li>
+    <li class="gemini-font"><strong>Lightweight:</strong> It has a small code footprint and consumes minimal network bandwidth.</li>
+    <li class="gemini-font"><strong>Efficient:</strong> Optimized for low-power devices and environments with less reliable network connections.</li>
+    <li class="gemini-font"><strong>Scalable:</strong> The publish/subscribe model easily accommodates a growing number of connected devices.</li>
+    <li class="gemini-font"><strong>Simple to Implement:</strong> Relatively straightforward to integrate into various hardware and software platforms.</li>
+    <li class="gemini-font"><strong>Robust:</strong> Features like QoS, retained messages, and LWT enhance its reliability.</li>
+    <li class="gemini-font"><strong>Open Standard:</strong> As an OASIS standard, it promotes broad interoperability among different systems.</li>
   </ul>
 
   <p>Ultimately, MQTT provides a highly efficient and dependable mechanism for device communication in resource-constrained settings, cementing its role as a fundamental protocol in the ever-expanding landscape of the Internet of Things.</p>
