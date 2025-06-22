@@ -3,92 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collaborative Drawing Game - Marc Dickenson's Blog</title>
+    <title>marcdickenson.com</title>
     <link rel="stylesheet" href="./styles.7.css">
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X3T91JZH6W"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X3T91JZH6W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-        gtag('config', 'G-X3T91JZH6W');
-    </script>
+  gtag('config', 'G-X3T91JZH6W');
+</script>
 </head>
 <body>
 
     <div class="site-wrapper" id="sitediv">
 
-        <nav class="navbar">
-            <div class="logo"><a href="./home.html">marcdickenson.com</a></div>
-            <ul class="menu" id="mobileMenu">
-                <li><a href="./home.html">Home</a></li>
-                <li><a href="./about.html">About</a></li>
-                <li><a href="./services.html">Services</a></li>
-                <li><a href="./portfolio.html">Portfolio</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-            </ul> 
-            <button class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-        </nav>
+    <nav class="navbar">
+        <div class="logo"><a href="./home.html">marcdickenson.com</a></div>
+        <ul class="menu" id="mobileMenu">
+            <li><a href="./home.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+            <li><a href="./services.html">Services</a></li>
+            <li><a href="./portfolio.html">Portfolio</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+        </ul> 
+        <button class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </nav>
+<!--
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const menu = document.querySelector('.menu');
 
-        <main class="site-content">
-            <div class="blog-header"> <h1>Welcome to Marc Dickenson's Blog Page</h1>
-                <p>"The greatest scientists are artists as well" - Albert Einstein</p>
-            </div>
-            <hr>
-            <div class="game-section"> <h1>Collaborative Drawing Game</h1>
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
 
-                <canvas id="drawingCanvas" width="600" height="600"></canvas>
+        // Optional: Close menu when a link is clicked (for better UX on mobile)
+        document.querySelectorAll('.menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+    </script>
+-->
 
-                <div class="controls">
-                    <label for="colorPicker">Brush Color:</label>
-                    <input type="color" id="colorPicker" value="#000000">
-                    <label for="lineThickness">Thickness:</label>
-                    <input type="range" id="lineThickness" min="1" max="10" value="3">
-                    <button id="clearCanvas">Clear Canvas</button>
-                </div>
+    <main class="site-content">
 
-                <p class="status" id="mqttStatus">Connecting to MQTT Broker...</p>
-                <p class="status">Your drawing ID: <span id="drawingTopicDisplay">Loading...</span></p>
+    <div style="padding: 20px; text-align: center; color: white;">
+        <h1>Welcome to Marc Dickenson's Blog Page</h1>
+        <p>"The greatest scientists are artists as well" - Albert Einstein</p>
+    </div>
+    <hr>
+    <div style="padding: 20px; text-align: center; color: white;">    
+	<center>	
+	<h1>Collaborative Drawing Game</h1>
 
-                <div class="instructions">
-                    <h3>How to Play:</h3>
-                    <ol>
-                        <li>Open this page in multiple browser tabs or on different devices.</li>
-                        <li>Each instance will get the same unique "Drawing ID".</li>
-                        <li>Draw on the canvas! Your strokes will appear on everyone else's canvas in real-time.</li>
-                        <li>Change the brush color and thickness using the controls.</li>
-                        <li>Click "Clear Canvas" to clear everyone's canvas.</li>
-                        <li>**Important:** This uses a public test broker, so **do not draw anything sensitive!**</li>
-                    </ol>
-                </div>
-            </div>
-        </main>
+    <canvas id="drawingCanvas" width="600" height="600"></canvas>
 
-        <footer>
-            <div class="footer-content">
-                <p>&copy; 2025 marcdickenson.com. All rights reserved.</p>
-                <nav class="footer-nav">
-                    <a href="https://docs.google.com/document/d/e/2PACX-1vSCsvIeTzHrgsts1hZMI8sY8bSWb_jrz2RV21jrocLBnbygxCKZfFY1uuvHFKFmL8uBs0FGhbPwN7MI/pub" target="_blank">Privacy Policy</a> |
-                    <a href="https://docs.google.com/document/d/e/2PACX-1vT639UOl-qnTGR8-84-I7nitsuehwalqYDn6IOfqJsISGcq2rPgnSdbMQsWkqvZyQPwpJHLHdXD4OAj/pub" target="_blank">Terms of Service</a> |
-                    <a href="https://docs.google.com/document/d/e/2PACX-1vTTqiekzwzA2Asnr0yUYEIZcMCs--311vK-nRwcDBn5pH060xHpVUGlUlGGh3Hp7ysthNl_-9O3EGeX/pub" target="_blank">Disclaimer</a> |
-                    <a href="https://docs.google.com/document/d/e/2PACX-1vTLoQcy3oEKzKckgfdiZCVz6dUjOltt-udyjOY-WYHRJJPXPrcePZ948kD8uxaOTSEMp13QRhpgSVMo/pub" target="_blank">Credits</a> |
-                    <a href="./contact.html">Contact Us</a>
-                </nav>
-                <p>My space to explore passions, document life, and share openly with the world.</p>
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/marc-dickenson-b1519b8" alt="My Linked in Profile Page" target="_blank">L</a> |
-                    <a href="https://www.facebook.com/marc.dickenson1" alt="Facebook" target="_blank">F</a> |
-                    <a href="https://x.com/marcdickenson" alt="X" target="_blank">X</a> | 
-                    <a href="https://github.com/mdickens/" alt="My Github Profile Page" target="_blank">G</a> 
-                </div>
-            </div>
-        </footer>
-    </div> 
+    <div class="controls">
+        <label for="colorPicker">Brush Color:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        <label for="lineThickness">Thickness:</label>
+        <input type="range" id="lineThickness" min="1" max="10" value="3">
+        <button id="clearCanvas">Clear Canvas</button>
+    </div>
+
+    <p class="status" id="mqttStatus">Connecting to MQTT Broker...</p>
+    <p class="status">Your drawing ID: <span id="drawingTopicDisplay">Loading...</span></p>
+
+    <div class="instructions">
+        <h3>How to Play:</h3>
+        <ol>
+            <li>Open this page in multiple browser tabs or on different devices.</li>
+            <li>Each instance will get the same unique "Drawing ID".</li>
+            <li>Draw on the canvas! Your strokes will appear on everyone else's canvas in real-time.</li>
+            <li>Change the brush color and thickness using the controls.</li>
+            <li>Click "Clear Canvas" to clear everyone's canvas.</li>
+            <li>**Important:** This uses a public test broker, so **do not draw anything sensitive!**</li>
+        </ol>
+    </div>
 
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script>
@@ -96,9 +97,14 @@
         const MQTT_BROKER_URL = 'wss://test.mosquitto.org:8081/mqtt'; // WebSockets over SSL
         const BASE_TOPIC = 'drawing_game/collaborative_canvas/'; // Base topic for the game
 
+        // Generate a unique ID for this drawing session (or allow user to set one)
+        // For a true "game," all players must use the SAME drawingId.
+        // For a quick test, you can hardcode one, or dynamically generate.
+        // Let's generate one, and allow user to copy it.
+        let drawingId = 'default_room_123'; // Hardcoded for simplicity for initial testing
+        // You could use `Math.random().toString(36).substring(2, 8);` for truly unique rooms.
         // For a collaborative game, all players need to agree on this ID.
         // Let's make it a fixed one for easy collaboration.
-        let drawingId = 'default_room_123';
         const DRAWING_TOPIC = BASE_TOPIC + drawingId;
 
         // --- HTML Elements ---
@@ -117,10 +123,6 @@
         let currentColor = colorPicker.value;
         let currentThickness = parseInt(lineThicknessInput.value);
 
-        // Store the original canvas dimensions (for scaling)
-        const originalCanvasWidth = 600;
-        const originalCanvasHeight = 600;
-
         // --- MQTT Client ---
         let client;
 
@@ -130,56 +132,25 @@
             setupCanvasEvents();
             setupControls();
             connectMqtt();
-            
-            // Adjust canvas size initially and on window resize
-            adjustCanvasSize();
-            window.addEventListener('resize', adjustCanvasSize);
-        }
-
-        // --- Responsive Canvas Adjustment ---
-        function adjustCanvasSize() {
-            // Get the width of the parent container minus its horizontal padding
-            const parent = canvas.parentElement;
-            const parentStyle = getComputedStyle(parent);
-            const parentPaddingLeft = parseFloat(parentStyle.paddingLeft);
-            const parentPaddingRight = parseFloat(parentStyle.paddingRight);
-            const availableWidth = parent.clientWidth - parentPaddingLeft - parentPaddingRight;
-
-            // Calculate new canvas width, respecting the max-width of 600px
-            const newCanvasWidth = Math.min(availableWidth, originalCanvasWidth);
-
-            // Calculate new height to maintain aspect ratio
-            const newCanvasHeight = (newCanvasWidth / originalCanvasWidth) * originalCanvasHeight;
-
-            // Apply these dimensions to the canvas *attributes*
-            canvas.width = newCanvasWidth;
-            canvas.height = newCanvasHeight;
-
-            // When canvas size changes, clear it to prevent distortion of old drawings
-            // and prepare for new ones on the scaled context.
-            clearCanvasLocally();
-            // IMPORTANT: If you want drawings to persist and scale on resize, you'd need
-            // to store all drawing strokes (x1, y1, x2, y2, color, thickness) and then
-            // redraw them all here, scaling each coordinate to the new canvas dimensions.
-            // For a simple real-time collaborative app, clearing is often acceptable.
         }
 
         function setupCanvasEvents() {
-            // MOUSE EVENTS
             canvas.addEventListener('mousedown', startDrawing);
             canvas.addEventListener('mousemove', draw);
             canvas.addEventListener('mouseup', stopDrawing);
-            canvas.addEventListener('mouseout', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing); // Stop drawing if mouse leaves canvas
 
-            // TOUCH EVENTS
+            // For touch devices
             canvas.addEventListener('touchstart', (e) => {
-                e.preventDefault(); // Prevent scrolling/zooming
-                startDrawing(e);
-            }, { passive: false }); // Use passive: false to allow preventDefault
+                e.preventDefault(); // Prevent scrolling
+                const touch = e.touches[0];
+                startDrawing({ offsetX: touch.clientX - canvas.offsetLeft, offsetY: touch.clientY - canvas.offsetTop });
+            });
             canvas.addEventListener('touchmove', (e) => {
-                e.preventDefault(); // Prevent scrolling/zooming
-                draw(e);
-            }, { passive: false });
+                e.preventDefault();
+                const touch = e.touches[0];
+                draw({ offsetX: touch.clientX - canvas.offsetLeft, offsetY: touch.clientY - canvas.offsetTop });
+            });
             canvas.addEventListener('touchend', stopDrawing);
             canvas.addEventListener('touchcancel', stopDrawing);
         }
@@ -193,6 +164,7 @@
             });
             clearButton.addEventListener('click', () => {
                 clearCanvasLocally();
+                // Publish a clear message to all clients
                 if (client && client.connected) {
                     client.publish(DRAWING_TOPIC, JSON.stringify({ type: 'clear' }), { qos: 0, retain: false });
                 }
@@ -201,19 +173,15 @@
 
         function connectMqtt() {
             mqttStatusSpan.textContent = "Connecting to MQTT Broker...";
-            // Assign a unique client ID to prevent potential issues with multiple connections from the same source
-            const clientId = `mqttjs_draw_${Math.random().toString(36).substring(2, 15)}`;
-            client = mqtt.connect(MQTT_BROKER_URL, { clientId: clientId, clean: true });
+            client = mqtt.connect(MQTT_BROKER_URL);
 
             client.on('connect', () => {
                 mqttStatusSpan.textContent = "Connected to MQTT Broker!";
-                console.log(`Connected to MQTT broker with client ID: ${clientId}`);
                 client.subscribe(DRAWING_TOPIC, (err) => {
                     if (!err) {
                         console.log(`Subscribed to ${DRAWING_TOPIC}`);
                     } else {
                         console.error(`Subscription error: ${err}`);
-                        mqttStatusSpan.textContent = `Subscription Error: ${err.message}`;
                     }
                 });
             });
@@ -224,18 +192,11 @@
                     if (data.type === 'clear') {
                         clearCanvasLocally();
                     } else if (data.type === 'draw') {
-                        // Scale incoming coordinates to the current canvas size
-                        const scaleX = canvas.width / originalCanvasWidth;
-                        const scaleY = canvas.height / originalCanvasHeight;
-
-                        drawLine(
-                            data.prevX * scaleX,
-                            data.prevY * scaleY,
-                            data.currX * scaleX,
-                            data.currY * scaleY,
-                            data.color,
-                            data.thickness
-                        );
+                        // Ensure it's not our own message to avoid echo drawing
+                        // (though with shared canvas, this is less critical)
+                        if (data.clientId !== client.options.clientId) { // Only if we assign client IDs
+                            drawLine(data.prevX, data.prevY, data.currX, data.currY, data.color, data.thickness);
+                        }
                     }
                 } catch (e) {
                     console.error("Error parsing message:", e);
@@ -249,63 +210,28 @@
             });
 
             client.on('close', () => {
-                mqttStatusSpan.textContent = "Disconnected from MQTT Broker. Attempting to reconnect...";
-                // Implement a more robust reconnect strategy here if needed
-                setTimeout(connectMqtt, 3000); // Try to reconnect after 3 seconds
-            });
-
-            client.on('offline', () => {
-                mqttStatusSpan.textContent = "MQTT Client went offline.";
+                mqttStatusSpan.textContent = "Disconnected from MQTT Broker. Reconnecting...";
+                // Optionally add a reconnect logic here with a delay
+                // setTimeout(connectMqtt, 5000);
             });
         }
 
         // --- Drawing Functions ---
 
-        // Helper to get coordinates relative to the canvas, scaled to original 600x600 space
-        function getScaledCoordinates(event) {
-            const rect = canvas.getBoundingClientRect(); // Get canvas size and position
-            let clientX, clientY;
-
-            if (event.touches && event.touches.length > 0) { // Touch event
-                clientX = event.touches[0].clientX;
-                clientY = event.touches[0].clientY;
-            } else { // Mouse event
-                clientX = event.clientX;
-                clientY = event.clientY;
-            }
-
-            // Calculate coordinates relative to the canvas
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
-
-            // Scale these coordinates to the original 600x600 dimension
-            const scaledX = x * (originalCanvasWidth / canvas.width);
-            const scaledY = y * (originalCanvasHeight / canvas.height);
-
-            return { x: scaledX, y: scaledY };
-        }
-
         function startDrawing(e) {
             isDrawing = true;
-            const { x, y } = getScaledCoordinates(e);
-            [lastX, lastY] = [x, y]; // Store scaled coordinates
+            [lastX, lastY] = [e.offsetX, e.offsetY];
         }
 
         function draw(e) {
             if (!isDrawing) return;
 
-            const { x, y } = getScaledCoordinates(e);
-            const currX = x;
-            const currY = y;
+            const currX = e.offsetX;
+            const currY = e.offsetY;
 
-            // Draw locally: scale coordinates back to current canvas dimensions for drawing
-            drawLine(lastX * (canvas.width / originalCanvasWidth),
-                     lastY * (canvas.height / originalCanvasHeight),
-                     currX * (canvas.width / originalCanvasWidth),
-                     currY * (canvas.height / originalCanvasHeight),
-                     currentColor, currentThickness);
+            drawLine(lastX, lastY, currX, currY, currentColor, currentThickness);
 
-            // Publish the drawing coordinates (use the original 600x600 scaled coordinates)
+            // Publish the drawing coordinates
             if (client && client.connected) {
                 const message = {
                     type: 'draw',
@@ -315,6 +241,8 @@
                     currY: currY,
                     color: currentColor,
                     thickness: currentThickness,
+                    // You might add a unique client ID here if you need to differentiate
+                    // client.options.clientId: client.options.clientId // this would need to be set on connect
                 };
                 client.publish(DRAWING_TOPIC, JSON.stringify(message), { qos: 0, retain: false });
             }
@@ -340,27 +268,36 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-        // Navbar script (moved from HTML to here for better separation)
-        const hamburger = document.querySelector('.hamburger');
-        const menu = document.querySelector('.menu');
-
-        if (hamburger && menu) { // Check if elements exist
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                menu.classList.toggle('active');
-            });
-
-            document.querySelectorAll('.menu a').forEach(item => {
-                item.addEventListener('click', () => {
-                    hamburger.classList.remove('active');
-                    menu.classList.remove('active');
-                });
-            });
-        }
-
-
         // Run initialization when the DOM is ready
         document.addEventListener('DOMContentLoaded', init);
+
     </script>
+
+
+    </div>
+    </main>
+
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2025 marcdickenson.com. All rights reserved.</p>
+                <nav class="footer-nav">
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vSCsvIeTzHrgsts1hZMI8sY8bSWb_jrz2RV21jrocLBnbygxCKZfFY1uuvHFKFmL8uBs0FGhbPwN7MI/pub">Privacy Policy</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vT639UOl-qnTGR8-84-I7nitsuehwalqYDn6IOfqJsISGcq2rPgnSdbMQsWkqvZyQPwpJHLHdXD4OAj/pub">Terms of Service</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vTTqiekzwzA2Asnr0yUYEIZcMCs--311vK-nRwcDBn5pH060xHpVUGlUlGGh3Hp7ysthNl_-9O3EGeX/pub">Disclaimer</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vTLoQcy3oEKzKckgfdiZCVz6dUjOltt-udyjOY-WYHRJJPXPrcePZ948kD8uxaOTSEMp13QRhpgSVMo/pub">Credits</a> |
+                    <a href="./contact.html">Contact Us</a>
+                </nav>
+                <p>My space to explore passions, document life, and share openly with the world.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/marc-dickenson-b1519b8" alt="My Linked in Profile Page" target="_blank">L</a> |
+					<a href="https://www.facebook.com/marc.dickenson1" alt="Facebook" target="_blank">F</a> |
+					<a href="https://x.com/marcdickenson" alt="X" target="_blank">X</a> | 
+					<a href="https://github.com/mdickens/" alt="My Github Profile Page" target="_blank">G</a> 
+                </div>
+            </div>
+        </footer>
+</div> 
+<script src="script.js"></script> 
 </body>
 </html>
