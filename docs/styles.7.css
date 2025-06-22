@@ -1,4 +1,4 @@
-/* Template: ./b22.png */
+/* Template: ./b24.png */
 /* Add this at the very top of your CSS file */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -74,7 +74,7 @@ header nav a {
 		/* Basic Styling */
 		html, body {
 			overflow-x: hidden; /* Prevent horizontal scrolling */
-            background-image: url('./b22.png');
+            background-image: url('./b24.png');
             background-size: cover; /* Ensures the image covers the entire viewport */
             background-repeat: no-repeat; /* Prevents the image from repeating */
             background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
@@ -350,9 +350,6 @@ a:active {
 
 
 
-
-
-
 .gemini-text-container {
     /* Container for the text, providing padding and rounded corners */
     background: linear-gradient(135deg, #2b2b4d, #1a1a2e); /* Subtle gradient background */
@@ -368,7 +365,7 @@ a:active {
 .gemini-font {
     /* Main styling for the "Gemini font" text */
     font-family: 'Inter', sans-serif; /* Explicitly set font */
-    font-size: 4.5em; /* Large, impactful text */
+    font-size: 1.2em; /* Changed to a normal paragraph-like size */
     font-weight: 900; /* Extra bold */
     line-height: 1.2; /* Good line spacing */
     letter-spacing: -0.03em; /* Slightly tighter letter spacing for modern look */
@@ -426,7 +423,7 @@ a:active {
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
     .gemini-font {
-        font-size: 2.5em; /* Smaller font size for mobile */
+        font-size: 1em; /* Adjusted for smaller screens */
         letter-spacing: -0.02em;
     }
     .gemini-text-container {
@@ -436,10 +433,11 @@ a:active {
 
 @media (max-width: 480px) {
     .gemini-font {
-        font-size: 1.8em; /* Even smaller for very small screens */
+        font-size: 0.9em; /* Further adjusted for very small screens */
     }
     .gemini-text-container {
         padding: 20px 30px;
         border-radius: 15px;
     }
 }
+
