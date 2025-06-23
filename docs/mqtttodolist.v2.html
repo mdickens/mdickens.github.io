@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>marcdickenson.com</title>
 	<link rel="stylesheet" href="mqtttodolist.v2.html.style.css">
-    <link rel="stylesheet" href="./styles.12.css">
+    <link rel="stylesheet" href="./styles.45.css">
 
 	<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X3T91JZH6W"></script>
@@ -143,66 +143,98 @@
             taskList.addEventListener('click', handleTaskActions); // Event delegation
         }
 
-        function connectMqtt() {
-			console.log('sleep 1 seconds (Async/Await)');
-  			sleep(1000); // Pause for another 1 second
-            mqttStatusSpan.textContent = "Connecting to MQTT Broker...";
-            client = mqtt.connect(MQTT_BROKER_URL, { clientId: clientId });
+// Add these variables to your script's global or module scope
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 10; // Or whatever limit you want
+const BASE_RECONNECT_DELAY_MS = 1000; // 1 second base delay
 
-            client.on('connect', () => {
-                mqttStatusSpan.textContent = "Connected to MQTT Broker!";
-                // Subscribe to all relevant topics for this list ID
-                client.subscribe([TOPIC_ADD, TOPIC_COMPLETE, TOPIC_DELETE, TOPIC_SYNC_REQUEST, TOPIC_SYNC_RESPONSE], (err) => {
-                    if (!err) {
-                        console.log(`Subscribed to topics for list: ${TODO_LIST_ID}`);
-                        // When connected, request sync from other clients to get current list state
-                        client.publish(TOPIC_SYNC_REQUEST, JSON.stringify({ requesterId: clientId }), { qos: 0, retain: false });
-                    } else {
-                        console.error(`Subscription error: ${err}`);
-                        mqttStatusSpan.textContent = `Subscription Error: ${err.message}`;
-                    }
-                });
-            });
+// Function to calculate exponential backoff delay
+function calculateBackoffDelay(attempt) {
+    // delay = base_delay * (2^attempt - 1)
+    // You can add randomness (jitter) to prevent thundering herd problem
+    const delay = BASE_RECONNECT_DELAY_MS * Math.pow(2, attempt - 1);
+    const jitter = Math.random() * BASE_RECONNECT_DELAY_MS; // Add some random jitter
+    return Math.min(delay + jitter, 30000); // Cap the max delay, e.g., at 30 seconds
+}
 
-            client.on('message', (topic, message) => {
-                try {
-                    const payload = JSON.parse(message.toString());
-                    console.log(`Received message on ${topic}:`, payload);
+function connectMqtt() {
+    mqttStatusSpan.textContent = "Connecting to MQTT Broker...";
+    
+    // Disconnect existing client if it exists to prevent multiple connections
+    if (client && client.connected) {
+        client.end(true); // end(true) closes the connection immediately
+    }
 
-                    if (topic === TOPIC_ADD) {
-                        handleAddTask(payload.taskId, payload.taskText, payload.isCompleted);
-                    } else if (topic === TOPIC_COMPLETE) {
-                        handleCompleteTask(payload.taskId, payload.isCompleted);
-                    } else if (topic === TOPIC_DELETE) {
-                        handleDeleteTask(payload.taskId);
-                    } else if (topic === TOPIC_SYNC_REQUEST) {
-                        // If another client requests sync, send our current state
-                        if (payload.requesterId !== clientId) { // Don't respond to our own request
-                            client.publish(TOPIC_SYNC_RESPONSE, JSON.stringify({ senderId: clientId, tasks: tasks }), { qos: 0, retain: false });
-                        }
-                    } else if (topic === TOPIC_SYNC_RESPONSE) {
-                        // If we received a sync response, update our tasks if we don't have any
-                        if (tasks.length === 0 && payload.tasks && payload.tasks.length > 0) {
-                            tasks = payload.tasks;
-                            renderTasks(); // Re-render the UI with synchronized tasks
-                            console.log("Synchronized tasks from another client.");
-                        }
-                    }
-                } catch (e) {
-                    console.error("Error parsing message or handling payload:", e);
+    client = mqtt.connect(MQTT_BROKER_URL, { clientId: clientId });
+
+    client.on('connect', () => {
+        mqttStatusSpan.textContent = "Connected to MQTT Broker!";
+        reconnectAttempts = 0; // Reset attempts on successful connection
+
+        // Subscribe to all relevant topics for this list ID
+        client.subscribe([TOPIC_ADD, TOPIC_COMPLETE, TOPIC_DELETE, TOPIC_SYNC_REQUEST, TOPIC_SYNC_RESPONSE], (err) => {
+            if (!err) {
+                console.log(`Subscribed to topics for list: ${TODO_LIST_ID}`);
+                // When connected, request sync from other clients to get current list state
+                client.publish(TOPIC_SYNC_REQUEST, JSON.stringify({ requesterId: clientId }), { qos: 0, retain: false });
+            } else {
+                console.error(`Subscription error: ${err}`);
+                mqttStatusSpan.textContent = `Subscription Error: ${err.message}`;
+            }
+        });
+    });
+
+    client.on('message', (topic, message) => {
+        try {
+            const payload = JSON.parse(message.toString());
+            console.log(`Received message on ${topic}:`, payload);
+
+            if (topic === TOPIC_ADD) {
+                handleAddTask(payload.taskId, payload.taskText, payload.isCompleted);
+            } else if (topic === TOPIC_COMPLETE) {
+                handleCompleteTask(payload.taskId, payload.isCompleted);
+            } else if (topic === TOPIC_DELETE) {
+                handleDeleteTask(payload.taskId);
+            } else if (topic === TOPIC_SYNC_REQUEST) {
+                // If another client requests sync, send our current state
+                if (payload.requesterId !== clientId) { // Don't respond to our own request
+                    client.publish(TOPIC_SYNC_RESPONSE, JSON.stringify({ senderId: clientId, tasks: tasks }), { qos: 0, retain: false });
                 }
-            });
-
-            client.on('error', (err) => {
-                mqttStatusSpan.textContent = `MQTT Error: ${err.message}`;
-                console.error("MQTT Error:", err);
-            });
-
-            client.on('close', () => {
-                mqttStatusSpan.textContent = "Disconnected from MQTT Broker. Reconnecting...";
-                setTimeout(connectMqtt, 3000); // Attempt to reconnect after 3 seconds
-            });
+            } else if (topic === TOPIC_SYNC_RESPONSE) {
+                // If we received a sync response, update our tasks if we don't have any
+                if (tasks.length === 0 && payload.tasks && payload.tasks.length > 0) {
+                    tasks = payload.tasks;
+                    renderTasks(); // Re-render the UI with synchronized tasks
+                    console.log("Synchronized tasks from another client.");
+                }
+            }
+        } catch (e) {
+            console.error("Error parsing message or handling payload:", e);
         }
+    });
+
+    client.on('error', (err) => {
+        mqttStatusSpan.textContent = `MQTT Error: ${err.message}`;
+        console.error("MQTT Error:", err);
+        // Error events also usually precede 'close', so the reconnection will be handled there.
+        // If you want immediate retry on error without waiting for close, you'd put the backoff here
+        // But typically, 'close' handles the definitive disconnection.
+    });
+
+    client.on('close', () => {
+        reconnectAttempts++;
+        if (reconnectAttempts <= MAX_RECONNECT_ATTEMPTS) {
+            const delay = calculateBackoffDelay(reconnectAttempts);
+            mqttStatusSpan.textContent = `Disconnected from MQTT Broker. Reconnecting in ${Math.round(delay / 1000)}s (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})...`;
+            console.log(`Reconnecting in ${delay}ms (attempt ${reconnectAttempts})`);
+            setTimeout(connectMqtt, delay);
+        } else {
+            mqttStatusSpan.textContent = "Failed to connect to MQTT Broker after multiple attempts. Please refresh.";
+            console.error("Max reconnect attempts reached. Giving up.");
+        }
+    });
+}
+
 
         // --- Task Management Functions ---
 
@@ -313,7 +345,7 @@
                     <a href="https://docs.google.com/document/d/e/2PACX-1vTLoQcy3oEKzKckgfdiZCVz6dUjOltt-udyjOY-WYHRJJPXPrcePZ948kD8uxaOTSEMp13QRhpgSVMo/pub">Credits</a> |
                     <a href="./contact.html">Contact Us</a>
                 </nav>
-                <p>My space to explore passions, document life, and share openly with the world. Generated on Sun Jun 22 21:07:20 CDT 2025 .</p>
+                <p>My space to explore passions, document life, and share openly with the world. Generated on Sun Jun 22 21:10:38 CDT 2025 .</p>
                 <div class="social-links">
                     <a href="https://www.linkedin.com/in/marc-dickenson-b1519b8" alt="My Linked in Profile Page" target="_blank">L</a> |
 					<a href="https://www.facebook.com/marc.dickenson1" alt="Facebook" target="_blank">F</a> |
