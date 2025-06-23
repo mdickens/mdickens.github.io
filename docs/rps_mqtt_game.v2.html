@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>marcdickenson.com</title>
+	<link rel="stylesheet" href="rps_mqtt_game.v2.html.style.css">
+    <link rel="stylesheet" href="./styles.11.css">
+
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X3T91JZH6W"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-X3T91JZH6W');
+</script>
+</head>
+<body>
+
+    <div class="site-wrapper" id="sitediv">
+
+    <nav class="navbar">
+        <div class="logo"><a href="./home.html">marcdickenson.com</a></div>
+        <ul class="menu" id="mobileMenu">
+            <li><a href="./home.html">Home</a></li>
+            <li><a href="./about.html">About</a></li>
+            <li><a href="./services.html">Services</a></li>
+            <li><a href="./portfolio.html">Portfolio</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+        </ul> 
+        <button class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+    </nav>
+<!--
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const menu = document.querySelector('.menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // Optional: Close menu when a link is clicked (for better UX on mobile)
+        document.querySelectorAll('.menu a').forEach(item => {
+            item.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                menu.classList.remove('active');
+            });
+        });
+    </script>
+-->
+
+    <main class="site-content">
+            
+    <div style="padding: 20px; text-align: center; color: white;">
+        <h1>Welcome to Marc Dickenson's Project Page</h1>
+        <p>"The greatest scientists are artists as well" - Albert Einstein</p>
+    </div>  
+    <hr>
+    <div style="padding: 20px; text-align: center; color: white;">
+    <center>  
+            <div class="rps-container">
+                <h1>Rock, Paper, Scissors</h1>
+
+                <div class="score-board">
+                    <div class="score-box">
+                        <p>Player Score</p>
+                        <div id="playerScore" class="score-value">0</div>
+                    </div>
+                    <div class="score-box">
+                        <p>Computer Score</p>
+                        <div id="computerScore" class="score-value">0</div>
+                    </div>
+                </div>
+
+                <div class="choices">
+                    <button id="rock" class="choice-button">✊ Rock</button>
+                    <button id="paper" class="choice-button">✋ Paper</button>
+                    <button id="scissors" class="choice-button">✌️ Scissors</button>
+                </div>
+
+                <div class="results">
+                    <p class="result-message" id="resultMessage">Make your move!</p>
+                    <p class="player-choice" id="playerChoiceDisplay"></p>
+                    <p class="computer-choice" id="computerChoiceDisplay"></p>
+                </div>
+
+                <button id="resetButton" class="reset-button">Reset Game</button>
+
+                <p class="mqtt-status" id="mqttStatus">Connecting to MQTT Broker...</p>
+                <p class="mqtt-status">Game ID: <strong id="gameTopicDisplay">Loading...</strong></p>
+
+                <div class="instructions">
+                    <h3>How to Play:</h3>
+                    <ol>
+                        <li>Choose Rock, Paper, or Scissors to play against the computer.</li>
+                        <li>This game uses MQTT for demonstrating a very basic form of data synchronization, even though it's single-player. You could extend this to make it multiplayer!</li>
+                        <li>**Important:** This uses a public test broker. **Do not put any private or sensitive information here!**</li>
+                    </ol>
+                </div>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script>
+        // --- MQTT Configuration ---
+        const MQTT_BROKER_URL = 'wss://test.mosquitto.org:8081/mqtt'; // WebSockets over SSL
+        const BASE_TOPIC = 'rps_game/single_player_instance/'; // Base topic for the game
+
+        // For this single-player game, we still use a unique ID for "this instance"
+        // so if you open multiple tabs, they don't interfere with each other's scores.
+        // For a multi-player version, all players would use the same game ID.
+        const GAME_ID = `game_${Math.random().toString(36).substring(2, 9)}`; // Unique ID for this game instance
+        const PLAYER_CHOICE_TOPIC = BASE_TOPIC + GAME_ID + '/player_choice';
+        const GAME_STATE_TOPIC = BASE_TOPIC + GAME_ID + '/game_state'; // To sync scores/results
+        const RESET_GAME_TOPIC = BASE_TOPIC + GAME_ID + '/reset';
+
+        // --- HTML Elements ---
+        const playerScoreSpan = document.getElementById('playerScore');
+        const computerScoreSpan = document.getElementById('computerScore');
+        const resultMessage = document.getElementById('resultMessage');
+        const playerChoiceDisplay = document.getElementById('playerChoiceDisplay');
+        const computerChoiceDisplay = document.getElementById('computerChoiceDisplay');
+        const choiceButtons = document.querySelectorAll('.choice-button');
+        const resetButton = document.getElementById('resetButton');
+        const mqttStatusSpan = document.getElementById('mqttStatus');
+        const gameTopicDisplay = document.getElementById('gameTopicDisplay');
+
+        // --- Game State Variables ---
+        let playerScore = 0;
+        let computerScore = 0;
+        const choices = ['rock', 'paper', 'scissors'];
+
+        // --- MQTT Client ---
+        let client;
+
+        // --- Initialization ---
+        function init() {
+            gameTopicDisplay.textContent = GAME_ID; // Display the unique game ID
+            setupEventListeners();
+            connectMqtt();
+            updateScoreDisplay(); // Initialize score display
+        }
+
+        function setupEventListeners() {
+            choiceButtons.forEach(button => {
+                button.addEventListener('click', () => makeMove(button.id));
+            });
+            resetButton.addEventListener('click', resetGame);
+
+            // Navbar script (moved from HTML to here for better separation)
+            const hamburger = document.querySelector('.hamburger');
+            const menu = document.querySelector('.menu');
+
+            if (hamburger && menu) { // Check if elements exist
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    menu.classList.toggle('active');
+                });
+
+                document.querySelectorAll('.menu a').forEach(item => {
+                    item.addEventListener('click', () => {
+                        hamburger.classList.remove('active');
+                        menu.classList.remove('active');
+                    });
+                });
+            }
+        }
+
+        function connectMqtt() {
+            mqttStatusSpan.textContent = "Connecting to MQTT Broker...";
+            const clientId = `mqttjs_rps_${Math.random().toString(36).substring(2, 15)}`;
+            client = mqtt.connect(MQTT_BROKER_URL, { clientId: clientId, clean: true });
+
+            client.on('connect', () => {
+                mqttStatusSpan.textContent = "Connected to MQTT Broker!";
+                console.log(`Connected to MQTT broker with client ID: ${clientId}`);
+
+                // Subscribe to game state topics
+                client.subscribe([
+                    GAME_STATE_TOPIC,
+                    RESET_GAME_TOPIC
+                ], (err) => {
+                    if (!err) {
+                        console.log(`Subscribed to game topics for ID: ${GAME_ID}`);
+                    } else {
+                        console.error(`Subscription error: ${err}`);
+                        mqttStatusSpan.textContent = `Subscription Error: ${err.message}`;
+                    }
+                });
+            });
+
+            client.on('message', (topic, message) => {
+                try {
+                    const msgData = JSON.parse(message.toString());
+                    console.log(`Received message on ${topic}:`, msgData);
+
+                    if (topic === GAME_STATE_TOPIC) {
+                        playerScore = msgData.playerScore;
+                        computerScore = msgData.computerScore;
+                        resultMessage.textContent = msgData.resultMessage;
+                        playerChoiceDisplay.textContent = msgData.playerChoice ? `You chose: ${msgData.playerChoice}` : '';
+                        computerChoiceDisplay.textContent = msgData.computerChoice ? `Computer chose: ${msgData.computerChoice}` : '';
+                        updateScoreDisplay();
+                    } else if (topic === RESET_GAME_TOPIC) {
+                        playerScore = 0;
+                        computerScore = 0;
+                        resultMessage.textContent = "Game reset! Make your move!";
+                        playerChoiceDisplay.textContent = '';
+                        computerChoiceDisplay.textContent = '';
+                        updateScoreDisplay();
+                    }
+                } catch (e) {
+                    console.error("Error parsing message:", e);
+                }
+            });
+
+            client.on('error', (err) => {
+                mqttStatusSpan.textContent = `MQTT Error: ${err.message}`;
+                console.error("MQTT Error:", err);
+                client.end();
+            });
+
+            client.on('close', () => {
+                mqttStatusSpan.textContent = "Disconnected from MQTT Broker. Attempting to reconnect...";
+                setTimeout(connectMqtt, 3000);
+            });
+
+            client.on('offline', () => {
+                mqttStatusSpan.textContent = "MQTT Client went offline.";
+            });
+        }
+
+        // --- Game Logic ---
+
+        function makeMove(playerChoice) {
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            const winner = determineWinner(playerChoice, computerChoice);
+
+            let message = '';
+            if (winner === 'player') {
+                playerScore++;
+                message = "You Win!";
+            } else if (winner === 'computer') {
+                computerScore++;
+                message = "Computer Wins!";
+            } else {
+                message = "It's a Tie!";
+            }
+
+            // Update local display immediately for responsiveness
+            playerChoiceDisplay.textContent = `You chose: ${playerChoice}`;
+            computerChoiceDisplay.textContent = `Computer chose: ${computerChoice}`;
+            resultMessage.textContent = message;
+            updateScoreDisplay();
+
+            // Publish game state to MQTT
+            if (client && client.connected) {
+                const gameState = {
+                    playerScore: playerScore,
+                    computerScore: computerScore,
+                    resultMessage: message,
+                    playerChoice: playerChoice,
+                    computerChoice: computerChoice
+                };
+                client.publish(GAME_STATE_TOPIC, JSON.stringify(gameState), { qos: 0, retain: false }, (err) => {
+                    if (err) console.error("Publish game state error:", err);
+                });
+            } else {
+                 console.warn("MQTT client not connected. Game state not published.");
+            }
+        }
+
+        function determineWinner(player, computer) {
+            if (player === computer) {
+                return 'tie';
+            } else if (
+                (player === 'rock' && computer === 'scissors') ||
+                (player === 'paper' && computer === 'rock') ||
+                (player === 'scissors' && computer === 'paper')
+            ) {
+                return 'player';
+            } else {
+                return 'computer';
+            }
+        }
+
+        function updateScoreDisplay() {
+            playerScoreSpan.textContent = playerScore;
+            computerScoreSpan.textContent = computerScore;
+        }
+
+        function resetGame() {
+            // Publish reset command to MQTT
+            if (client && client.connected) {
+                client.publish(RESET_GAME_TOPIC, JSON.stringify({ action: 'reset' }), { qos: 0, retain: false }, (err) => {
+                    if (err) console.error("Publish reset error:", err);
+                });
+            } else {
+                // If not connected, just reset locally
+                playerScore = 0;
+                computerScore = 0;
+                resultMessage.textContent = "Game reset! Make your move!";
+                playerChoiceDisplay.textContent = '';
+                computerChoiceDisplay.textContent = '';
+                updateScoreDisplay();
+                console.warn("MQTT client not connected. Game reset locally only.");
+            }
+        }
+
+        // Run initialization when the DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+    </div>
+    </main>
+
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2025 marcdickenson.com. All rights reserved.</p>
+                <nav class="footer-nav">
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vSCsvIeTzHrgsts1hZMI8sY8bSWb_jrz2RV21jrocLBnbygxCKZfFY1uuvHFKFmL8uBs0FGhbPwN7MI/pub">Privacy Policy</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vT639UOl-qnTGR8-84-I7nitsuehwalqYDn6IOfqJsISGcq2rPgnSdbMQsWkqvZyQPwpJHLHdXD4OAj/pub">Terms of Service</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vTTqiekzwzA2Asnr0yUYEIZcMCs--311vK-nRwcDBn5pH060xHpVUGlUlGGh3Hp7ysthNl_-9O3EGeX/pub">Disclaimer</a> |
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vTLoQcy3oEKzKckgfdiZCVz6dUjOltt-udyjOY-WYHRJJPXPrcePZ948kD8uxaOTSEMp13QRhpgSVMo/pub">Credits</a> |
+                    <a href="./contact.html">Contact Us</a>
+                </nav>
+                <p>My space to explore passions, document life, and share openly with the world. Generated on Sun Jun 22 21:37:53 CDT 2025 .</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/marc-dickenson-b1519b8" alt="My Linked in Profile Page" target="_blank">L</a> |
+					<a href="https://www.facebook.com/marc.dickenson1" alt="Facebook" target="_blank">F</a> |
+					<a href="https://x.com/marcdickenson" alt="X" target="_blank">X</a> | 
+					<a href="https://www.instagram.com/marcdickenson/" alt="Instgram" title="Insta" target="_blank">I</a> |
+					<a href="https://github.com/mdickens/" alt="My Github Profile Page" target="_blank">G</a> |
+					<a href="https://analytics.google.com/analytics/web/?authuser=0" alt="Google Analytics" target="_blank">A</a>  
+                </div>
+            </div>
+        </footer>
+</div> 
+<script src="script.js"></script> 
+</body>
+</html>
