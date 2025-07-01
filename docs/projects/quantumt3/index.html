@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡️</text></svg>">
+    <title>Quantum Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <h1 id="game-title" class="animate-title">Quantum Tic-Tac-Toe</h1>
+        
+        <div id="main-menu">
+            <button id="vs-player-button">Player vs. Player</button>
+            <button id="vs-ai-button">Player vs. AI</button>
+        </div>
+
+        <div id="game-screen" class="hidden">
+            <div id="status-container" role="status" aria-live="polite">
+                <div id="player-turn-indicator"></div>
+                <div id="status">Player X's turn</div>
+            </div>
+            <div id="board-wrapper">
+                <div id="game-board" class="animate-board"></div>
+                <canvas id="win-canvas"></canvas>
+            </div>
+            <div class="buttons-container">
+                <button id="reset-button" title="Start a new game">Reset</button>
+                <button id="settings-button" title="Settings">⚙️</button>
+                <button id="help-button" title="How to play">Help</button>
+                <button id="main-menu-button" title="Back to Main Menu">Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="game-over-modal" class="modal" role="alertdialog" aria-modal="true" aria-labelledby="game-over-title">
+        <div class="modal-content">
+            <h2 id="game-over-title">Game Over</h2>
+            <p id="game-over-message"></p>
+            <button id="play-again-button">Play Again</button>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <div class="modal-content">
+            <span class="close-button" title="Close" role="button" tabindex="0">&times;</span>
+            <h2 id="settings-title">Settings</h2>
+            <div class="setting-item">
+                <label for="high-contrast-toggle">High Contrast Mode:</label>
+                <button id="high-contrast-toggle" role="switch" aria-checked="false">Off</button>
+            </div>
+            <div class="setting-item">
+                <label for="mute-toggle">Mute Sounds:</label>
+                <button id="mute-toggle" role="switch" aria-checked="false">Off</button>
+            </div>
+             <div class="setting-item">
+                <label for="fullscreen-button">Fullscreen:</label>
+                <button id="fullscreen-button">Enter Fullscreen</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="stats-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="stats-title">
+        <div class="modal-content">
+            <span class="close-button" title="Close" role="button" tabindex="0">&times;</span>
+            <h2 id="stats-title">Player Statistics</h2>
+            <div id="stats-content"></div>
+        </div>
+    </div>
+
+    <div id="achievements-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="achievements-title">
+        <div class="modal-content">
+            <span class="close-button" title="Close" role="button" tabindex="0">&times;</span>
+            <h2 id="achievements-title">Achievements</h2>
+            <div id="achievements-list"></div>
+        </div>
+    </div>
+
+    <!-- Achievement Unlocked Toast -->
+    <div id="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
