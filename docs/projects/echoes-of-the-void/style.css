@@ -1,0 +1,64 @@
+body {
+    background-color: #0a0a1a;
+    color: #9f9fef;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#game-container {
+    width: 80%;
+    max-width: 900px;
+    border: 1px solid #3a3a8a;
+    padding: 20px;
+    box-shadow: 0 0 25px #3a3a8a;
+    background-color: #0a0a1a;
+}
+
+#story-text {
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 1.1em;
+    color: #dfdfff;
+}
+
+#choices button {
+    background-color: #1a1a3a;
+    color: #9f9fef;
+    border: 1px solid #3a3a8a;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+#choices button:hover {
+    background-color: #3a3a8a;
+    color: #fff;
+    box-shadow: 0 0 10px #9f9fef;
+}
+
+#inventory {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #3a3a8a;
+    background-color: #1a1a3a;
+    color: #9f9fef;
+}
+
+#player-input {
+    background-color: #1a1a3a;
+    color: #9f9fef;
+    border: 1px solid #3a3a8a;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1em;
+}
