@@ -429,10 +429,6 @@ a:active {
     .gemini-text-container {
         padding: 30px 40px;
     }
-    .site-content {
-        /* Adjust max-width for tablets/larger phones if needed */
-        /* max-width: calc(100% - 60px); Example for 30px side margins */
-    }
 }
 
 @media (max-width: 480px) {
@@ -444,16 +440,6 @@ a:active {
         border-radius: 15px;
     }
 
-
-    .site-content {
-        /* Reduce the max-width to create more visible side margins */
-        max-width: calc(100% - 40px); /* 100% of viewport minus 20px left + 20px right margin */
-        /* Or a fixed pixel value, e.g., max-width: 320px; */
-
-        /* Alternative: If you want consistent padding, you can keep the max-width: 100%
-           and rely on the padding for spacing, but this doesn't "center" as effectively
-           if you want background visible. The calc() method works better. */
-    }
 }
 
 
