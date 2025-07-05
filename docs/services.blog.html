@@ -425,7 +425,7 @@ The potential power savings from converting all images on the internet to HEIC f
     <div class="play-button" id="playButton"> &#9658; </div>
 </div>
 
-<script>
+  <script>
         document.addEventListener('DOMContentLoaded', function() {
             const videoContainers = document.querySelectorAll('.video-container');
 
@@ -471,6 +471,19 @@ The potential power savings from converting all images on the internet to HEIC f
                 video.addEventListener('pause', function() {
                     playButton.style.display = 'flex';
                 });
+
+                // Intersection Observer to pause video when scrolled out of view
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting && !video.paused) {
+                            // If video is not in view and is playing, pause it and show button
+                            video.pause();
+                            playButton.style.display = 'flex';
+                        }
+                    });
+                }, { threshold: 0.5 }); // Adjust threshold as needed (0.5 means 50% of video must be visible)
+
+                observer.observe(video);
             });
         });
     </script>
