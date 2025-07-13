@@ -527,3 +527,39 @@ a:active {
         font-size: 1.2em;
     }
 }
+
+
+/* --- Styles for the Blog Header Section --- */
+.blog-section-header {
+    padding: 20px; /* Default padding for larger screens */
+    text-align: center;
+    color: white;
+}
+
+/* --- Styles for the general Blog Content Wrapper (for the second div and similar) --- */
+.blog-content-wrapper {
+    padding: 20px; /* Default padding for larger screens */
+    text-align: center;
+    color: white; /* Assuming these styles are consistent for this wrapper */
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+    .blog-section-header {
+        padding: 8px; /* Reduced padding for tablets and smaller desktops */
+    }
+
+    .blog-content-wrapper {
+        padding: 8px; /* Reduced padding for tablets and smaller desktops */
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-section-header {
+        padding: 4px; /* Further reduced padding for mobile phones */
+    }
+
+    .blog-content-wrapper {
+        padding: 4px; /* Further reduced padding for mobile phones */
+    }
+}
