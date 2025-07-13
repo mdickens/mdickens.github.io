@@ -514,4 +514,16 @@ a:active {
     h2, h4 {
         font-size: 1em; /* Further adjustment for very small screens */
     }
+    .blog-section {
+        margin: 3px auto; /* Adjust vertical margin for smaller screens */
+        padding: 0 3px; /* Slightly less horizontal padding for more content space */
+    }
+
+    .blog-content-block {
+        padding: 3px; /* Reduce padding inside the content block for smaller screens */
+    }
+
+    h2, h4 { /* Example: Adjust font sizes for better readability on small screens */
+        font-size: 1.2em;
+    }
 }
