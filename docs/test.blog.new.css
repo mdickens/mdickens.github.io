@@ -471,7 +471,7 @@ a:active {
 .blog-section {
     width: 100%;
     max-width: 800px; /* Or adjust to your content's max desired width */
-    margin: 20px auto; /* Centers the section and provides vertical spacing */
+    margin: 10px auto; /* Centers the section and provides vertical spacing */
     padding: 0 15px; /* Add some horizontal padding to prevent content from touching screen edges on small screens */
     /* If you want the background and border from the original table: */
     background-color: rgba(0, 0, 0, 0.6); /* Black with 40% opacity */
@@ -483,7 +483,7 @@ a:active {
 /* Content block within each section */
 .blog-content-block {
     text-align: center; /* Centers the text and images within this block */
-    padding: 20px; /* Add padding inside the content block */
+    padding: 10px; /* Add padding inside the content block */
 }
 
 /* Styles for responsive images within the new div structure */
