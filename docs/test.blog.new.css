@@ -547,19 +547,27 @@ a:active {
 @media (max-width: 768px) {
     .blog-section-header {
         padding: 8px; /* Reduced padding for tablets and smaller desktops */
+    	text-align: center;
+    	color: white;
     }
 
     .blog-content-wrapper {
         padding: 8px; /* Reduced padding for tablets and smaller desktops */
+    	text-align: center;
+    	color: white;
     }
 }
 
 @media (max-width: 480px) {
     .blog-section-header {
         padding: 4px; /* Further reduced padding for mobile phones */
+    	text-align: center;
+    	color: white;
     }
 
     .blog-content-wrapper {
         padding: 4px; /* Further reduced padding for mobile phones */
+    	text-align: center;
+    	color: white;
     }
 }
