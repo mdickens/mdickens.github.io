@@ -464,3 +464,113 @@ a:active {
             border-radius: 50%; /* Apply border-radius directly to the image too,
                                    though overflow: hidden on parent is more effective */
         }
+
+
+
+
+
+/* General container for blog sections */
+.blog-section {
+    width: 100%;
+    max-width: 800px; /* Or adjust to your content's max desired width */
+    margin: 10px auto; /* Centers the section and provides vertical spacing */
+    padding: 0 15px; /* Add some horizontal padding to prevent content from touching screen edges on small screens */
+    /* If you want the background and border from the original table: */
+    background-color: rgba(0, 0, 0, 0.6); /* Black with 40% opacity */
+    border: 1px solid #ccc;
+    border-collapse: collapse; /* Although it's a div, it maintains the table's visual border collapse effect */
+    border-radius: 5px; /* Optional: adds rounded corners to the block */
+}
+
+/* Content block within each section */
+.blog-content-block {
+    text-align: center; /* Centers the text and images within this block */
+    padding: 10px; /* Add padding inside the content block */
+}
+
+/* Styles for responsive images within the new div structure */
+.responsive-image {
+    max-width: 100%; /* Image will scale down if wider than its parent */
+    height: auto;    /* Maintains aspect ratio */
+    display: block;  /* Removes extra space below the image */
+    margin: 0 auto;  /* Centers the image horizontally within the block */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .blog-section {
+        margin: 5px auto; /* Adjust vertical margin for smaller screens */
+        padding: 0 5px; /* Slightly less horizontal padding for more content space */
+    }
+
+    .blog-content-block {
+        padding: 5px; /* Reduce padding inside the content block for smaller screens */
+    }
+
+    h2, h4 { /* Example: Adjust font sizes for better readability on small screens */
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    h2, h4 {
+        font-size: 1em; /* Further adjustment for very small screens */
+    }
+    .blog-section {
+        margin: 3px auto; /* Adjust vertical margin for smaller screens */
+        padding: 0 3px; /* Slightly less horizontal padding for more content space */
+    }
+
+    .blog-content-block {
+        padding: 3px; /* Reduce padding inside the content block for smaller screens */
+    }
+
+    h2, h4 { /* Example: Adjust font sizes for better readability on small screens */
+        font-size: 1.2em;
+    }
+}
+
+
+/* --- Styles for the Blog Header Section --- */
+.blog-section-header {
+    padding: 5px; /* Default padding for larger screens */
+    text-align: center;
+    color: white;
+}
+
+/* --- Styles for the general Blog Content Wrapper (for the second div and similar) --- */
+.blog-content-wrapper {
+    padding: 5px; /* Default padding for larger screens */
+    text-align: center;
+    color: white; /* Assuming these styles are consistent for this wrapper */
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+    .blog-section-header {
+        padding: 3px; /* Reduced padding for tablets and smaller desktops */
+    	text-align: center;
+    	color: white;
+    }
+
+    .blog-content-wrapper {
+        padding: 3px; /* Reduced padding for tablets and smaller desktops */
+    	text-align: center;
+    	color: white;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-section-header {
+        padding: 1px; /* Further reduced padding for mobile phones */
+    	text-align: center;
+    	color: white;
+    }
+
+    .blog-content-wrapper {
+        padding: 1px; /* Further reduced padding for mobile phones */
+    	text-align: center;
+    	color: white;
+    }
+}
+
