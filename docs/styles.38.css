@@ -574,3 +574,32 @@ a:active {
     }
 }
 
+/* --- New responsive styles for embedded content --- */
+.iframe-container {
+    position: relative;
+    width: 100%; /* The container will take up the full width available */
+    padding-bottom: 75%; /* Adjust this value to control the aspect ratio (e.g., 56.25% for 16:9, 75% for 4:3) */
+    height: 0;
+    overflow: hidden;
+    margin: 10px 0; /* Add some margin for spacing */
+}
+
+.iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* --- 
+Fixed: To make the <pre> text left-aligned in addition to fixing the overflow, you can add a text-align property to the CSS rule.
+https://g.co/gemini/share/a8e6002c02b7 
+--- */
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+  text-align: left;
+}
