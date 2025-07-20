@@ -592,3 +592,14 @@ a:active {
     height: 100%;
     border: none;
 }
+
+/* --- 
+Fixed: To make the <pre> text left-aligned in addition to fixing the overflow, you can add a text-align property to the CSS rule.
+https://g.co/gemini/share/a8e6002c02b7 
+--- */
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+  text-align: left;
+}
