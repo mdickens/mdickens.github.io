@@ -224,6 +224,7 @@ a:active {
 /* In your <style> block or external CSS file */
 .code-font {
   font-family: 'Courier New', Courier, monospace;
+  text-align: left;
 }
 
 
@@ -603,3 +604,14 @@ pre {
   overflow-x: auto;
   text-align: left;
 }
+
+
+
+.tracking-number {
+    font-size: 10px; /* Adjust the size as needed */
+    text-align: right; /* Aligns text to the right */
+    width: 100%; /* Ensures the div takes the full width */
+    color: #333333; /*This is dark gray text*/
+
+}
+
