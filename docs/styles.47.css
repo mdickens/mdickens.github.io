@@ -224,6 +224,7 @@ a:active {
 /* In your <style> block or external CSS file */
 .code-font {
   font-family: 'Courier New', Courier, monospace;
+  text-align: left;
 }
 
 
