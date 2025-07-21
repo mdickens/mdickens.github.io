@@ -604,3 +604,14 @@ pre {
   overflow-x: auto;
   text-align: left;
 }
+
+
+
+.tracking-number {
+    font-size: 10px; /* Adjust the size as needed */
+    text-align: right; /* Aligns text to the right */
+    width: 100%; /* Ensures the div takes the full width */
+    color: #333333; /*This is dark gray text*/
+
+}
+
