@@ -225,7 +225,11 @@ a:active {
 .code-font {
   font-family: 'Courier New', Courier, monospace;
   text-align: left;
+  white-space: pre-wrap; /* Allows long lines to wrap */
+  word-wrap: break-word; /* Ensures long words break */
+  overflow-x: auto; /* Adds horizontal scrollbar if wrapping is not enough */
 }
+
 
 
 
@@ -605,6 +609,11 @@ pre {
   text-align: left;
 }
 
+.code-font pre { /* Target pre tags specifically within code-font */
+    white-space: pre-wrap; /* Allows long lines to wrap */
+    word-wrap: break-word; /* Ensures long words break */
+    overflow-x: auto; /* Adds horizontal scrollbar if wrapping is not enough */
+}
 
 
 .tracking-number {
