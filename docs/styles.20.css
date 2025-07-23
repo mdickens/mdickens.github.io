@@ -229,6 +229,7 @@ a:active {
 
 
 
+
 /* Responsive Video Container */
 .video-container {
     position: relative;
@@ -605,6 +606,11 @@ pre {
   text-align: left;
 }
 
+.code-font pre { /* Target pre tags specifically within code-font */
+    white-space: pre-wrap; /* Allows long lines to wrap */
+    word-wrap: break-word; /* Ensures long words break */
+    overflow-x: auto; /* Adds horizontal scrollbar if wrapping is not enough */
+}
 
 
 .tracking-number {
