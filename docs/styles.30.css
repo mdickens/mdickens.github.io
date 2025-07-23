@@ -225,6 +225,11 @@ a:active {
 .code-font {
   font-family: 'Courier New', Courier, monospace;
   text-align: left;
+  white-space: pre-wrap; /* Allows long lines to wrap */
+  word-wrap: break-word; /* Ensures long words break */
+  word-break: break-all; /* Breaks words at any character to prevent overflow */
+  overflow-x: auto; /* Adds horizontal scrollbar if wrapping is not enough */
+
 }
 
 
@@ -602,6 +607,7 @@ https://g.co/gemini/share/a8e6002c02b7
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+  word-break: break-all; /* Breaks words at any character to prevent overflow */
   overflow-x: auto;
   text-align: left;
 }
@@ -609,6 +615,7 @@ pre {
 .code-font pre { /* Target pre tags specifically within code-font */
     white-space: pre-wrap; /* Allows long lines to wrap */
     word-wrap: break-word; /* Ensures long words break */
+    word-break: break-all; /* Breaks words at any character to prevent overflow */
     overflow-x: auto; /* Adds horizontal scrollbar if wrapping is not enough */
 }
 
