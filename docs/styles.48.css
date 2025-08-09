@@ -1,0 +1,630 @@
+/* Template: ./b48.png */
+/* Add this at the very top of your CSS file */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+	padding: 0;
+	margin: 0;
+    height: 100%;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 0.9em;
+    border-top: 1px solid #555;
+    /* margin-top: 40px; removed, flexbox handles spacing */
+}
+
+footer .footer-content {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+footer .footer-nav a,
+footer .social-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer .social-links a {
+    margin: 0 8px;
+}
+
+footer p {
+    margin: 0; /* Remove default paragraph margin */
+}
+footer p:last-of-type {
+    margin-top: 10px; /* Add margin only to the last paragraph if needed */
+}
+
+
+/* FLEXBOX STICKY FOOTER LOGIC */
+.site-wrapper {
+    display: flex;
+    flex-direction: column; /* Stacks children vertically */
+    min-height: 100vh; /* Ensures the container takes at least the full viewport height */
+}
+
+.site-content {
+    flex: 1; /* This is the magic! It tells main to grow and take up all available space */
+    /* Add padding/margin to main if needed for content spacing */
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+/* Optional: Basic header styling */
+header {
+    background-color: #f4f4f4;
+    padding: 20px;
+    text-align: center;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 10px;
+} 
+
+    /* Basic reset for better consistency */
+	/* Styles for the footer itself (as shown in your previous example) */
+		/* Basic Styling */
+		html, body {
+			overflow-x: hidden; /* Prevent horizontal scrolling */
+            background-image: url('./b48.png');
+            background-size: cover; /* Ensures the image covers the entire viewport */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-attachment: fixed; /* Optional: Keeps the background fixed while scrolling */
+
+    		padding: 0;
+    		height: 100%; /* Important: html and body must take full height */
+
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .navbar {
+            background-color: rgba(51, 51, 51, 0.8); /* Add some transparency for better readability over the background */
+
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .menu li {
+            margin-left: 20px;
+        }
+
+        .menu li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu li a:hover {
+            background-color: #555;
+        }
+
+        .hamburger {
+            display: none; /* Hidden by default on larger screens */
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 5px auto;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Responsive Design (for smaller screens) */
+        @media (max-width: 768px) {
+            .menu {
+                display: none; /* Hide the full menu */
+                flex-direction: column;
+                position: absolute;
+                top: 60px; /* Adjust based on navbar height */
+                left: 0;
+                background-color: #333;
+                width: 100%;
+                text-align: center;
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+                z-index: 10; /* Ensure it's above other content */
+            }
+
+            .menu.active {
+                display: flex; /* Show the menu when active class is added */
+            }
+
+            .menu li {
+                margin: 0;
+                padding: 15px 0;
+                border-bottom: 1px solid #555;
+            }
+
+            .menu li:last-child {
+                border-bottom: none;
+            }
+
+            .menu li a {
+                display: block;
+                width: 100%;
+            }
+
+            .hamburger {
+                display: block; /* Show the hamburger menu */
+            }
+
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+        }
+
+a {
+  color: #007bff; /* A common bright blue color */
+}
+
+a:visited {
+  color: #966399; /* A purple for visited links (optional) */
+}
+
+a:hover {
+  color: #0056b3; /* A slightly darker blue on hover (optional) */
+}
+
+a:active {
+  color: #003366; /* An even darker blue when the link is being clicked (optional) */
+}
+
+
+/* The styles for the image itself */
+        .responsive-image-in-td {
+            max-width: 100%; /* Image will scale down if wider than its parent TD */
+            height: auto;    /* Maintains aspect ratio */
+            display: block;  /* Removes extra space below the image */
+            margin: 0 auto;  /* Centers the image horizontally within the TD */
+        }
+
+
+/* In your <style> block or external CSS file */
+.code-font {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: left;
+  white-space: pre-wrap; /* Allows long lines to wrap */
+  word-wrap: break-word; /* Ensures long words break */
+  word-break: break-all; /* Breaks words at any character to prevent overflow */
+  overflow-x: auto; /* Adds horizontal scrollbar if wrapping is not enough */
+
+}
+
+
+
+
+/* Responsive Video Container */
+.video-container {
+    position: relative;
+    width: 100%; /* Take full width of parent (which is body here) */
+    max-width: 800px; /* Max width for the video player on large screens */
+    padding-bottom: 450px; /* Placeholder for height to maintain aspect ratio (e.g., 800px * (9/16) = 450px) */
+    /* Alternative for strict 16:9 aspect ratio regardless of max-width: */
+    /* padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 = 0.5625) */
+    
+    overflow: hidden;
+    background-color: black;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow */
+    margin-top: 50px; /* Example top margin */
+}
+
+.video-container video {
+    position: absolute; /* Position absolutely inside the container */
+    top: 0;
+    left: 0;
+    width: 100%; /* Fill the container */
+    height: 100%; /* Fill the container */
+    display: block;
+}
+
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    font-size: 80px; /* Adjust as needed for button size */
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    width: 120px; /* Adjust as needed for button size */
+    height: 120px; /* Adjust as needed for button size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+    user-select: none;
+}
+
+.play-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Optional: Hide the default video controls initially if you only want the big button */
+/* Note: These might not work consistently across all browsers for hiding default controls */
+.video-container video::-webkit-media-controls {
+    display: none !important;
+}
+.video-container video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+
+
+        canvas {
+            border: 2px solid #3498db;
+            background-color: #fff;
+            cursor: crosshair;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .controls label {
+            font-weight: bold;
+        }
+        .controls input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        .controls button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .controls button:hover {
+            background-color: #c0392b;
+        }
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .instructions {
+            margin-top: 20px;
+            background-color: #2c2021;
+            padding: 1px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            width: 80%;
+            max-width: 600px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 5px;
+        }
+
+
+
+.gemini-text-container {
+    /* Container for the text, providing padding and rounded corners */
+    background: linear-gradient(135deg, #2b2b4d, #1a1a2e); /* Subtle gradient background */
+    padding: 40px 60px; /* Ample padding */
+    border-radius: 20px; /* Nicely rounded corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Soft, deep shadow */
+    text-align: center; /* Center the text within the container */
+    max-width: 90vw; /* Responsive width */
+    position: relative; /* For pseudo-elements or absolute positioning */
+    overflow: hidden; /* Clip gradient or shadow effects */
+}
+
+.gemini-font {
+    /* Main styling for the "Gemini font" text */
+    font-family: 'Inter', sans-serif; /* Explicitly set font */
+    font-size: 1.2em; /* Changed to a normal paragraph-like size */
+    font-weight: 900; /* Extra bold */
+    line-height: 1.2; /* Good line spacing */
+    letter-spacing: -0.03em; /* Slightly tighter letter spacing for modern look */
+    color: #ffffff; /* Default white color for fallback */
+
+    /* Apply a vibrant gradient to the text itself */
+    background: linear-gradient(45deg, #8a2be2, #00ffff, #00bfff); /* Violet, Cyan, Deep Sky Blue */
+    -webkit-background-clip: text; /* Clip background to text shape (for WebKit browsers) */
+    -webkit-text-fill-color: transparent; /* Make text transparent to show clipped background */
+    background-clip: text; /* Standard property */
+    text-fill-color: transparent; /* Standard property */
+
+    /* Add a subtle text shadow for depth */
+    text-shadow: 0 5px 15px rgba(138, 43, 226, 0.5), /* Violet shadow */
+                 0 0 20px rgba(0, 255, 255, 0.3); /* Cyan glow */
+
+    transition: all 0.4s ease-in-out; /* Smooth transition for hover effects */
+    cursor: default; /* Indicate it's not clickable */
+}
+
+.gemini-font:hover {
+    /* Hover effect for a dynamic feel */
+    transform: scale(1.02); /* Slightly enlarge the text */
+    text-shadow: 0 8px 25px rgba(138, 43, 226, 0.7), /* Stronger violet shadow */
+                 0 0 30px rgba(0, 255, 255, 0.5); /* Stronger cyan glow */
+    background: linear-gradient(45deg, #9b4dff, #33ffff, #33ccee); /* Slightly brighter gradient on hover */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+/* Optional: Add a subtle animation for background elements or a glow */
+.gemini-text-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, transparent 70%);
+    animation: rotateBackground 20s linear infinite; /* Slow rotation animation */
+    z-index: -1; /* Place behind content */
+}
+
+@keyframes rotateBackground {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .gemini-font {
+        font-size: 1em; /* Adjusted for smaller screens */
+        letter-spacing: -0.02em;
+    }
+    .gemini-text-container {
+        padding: 30px 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gemini-font {
+        font-size: 0.9em; /* Further adjusted for very small screens */
+    }
+    .gemini-text-container {
+        padding: 20px 30px;
+        border-radius: 15px;
+    }
+}
+
+
+
+  /* Custom CSS to ensure perfect circle and image fitting */
+        .circular-image-container {
+            width: 150px;   /* Define a fixed width */
+            height: 150px;  /* Define a fixed height, making it a perfect square */
+            overflow: hidden; /* Hide anything outside the rounded border */
+            border-radius: 50%; /* This is the magic for the circle */
+            display: flex; /* Use flexbox to center the image if needed */
+            justify-content: center; /* Center image horizontally */
+            align-items: center; /* Center image vertically */
+            background-color: #e0e0e0; /* Placeholder background if image loads slowly */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        .circular-image {
+            width: 100%; /* Make the image take 100% width of its container */
+            height: 100%; /* Make the image take 100% height of its container */
+            object-fit: cover; /* This is crucial: scales the image to cover the area,
+                                   cropping if necessary, without distorting aspect ratio. */
+            border-radius: 50%; /* Apply border-radius directly to the image too,
+                                   though overflow: hidden on parent is more effective */
+        }
+
+
+
+
+
+/* General container for blog sections */
+.blog-section {
+    width: 100%;
+    max-width: 800px; /* Or adjust to your content's max desired width */
+    margin: 10px auto; /* Centers the section and provides vertical spacing */
+    padding: 0 15px; /* Add some horizontal padding to prevent content from touching screen edges on small screens */
+    /* If you want the background and border from the original table: */
+    background-color: rgba(0, 0, 0, 0.6); /* Black with 40% opacity */
+    border: 1px solid #ccc;
+    border-collapse: collapse; /* Although it's a div, it maintains the table's visual border collapse effect */
+    border-radius: 5px; /* Optional: adds rounded corners to the block */
+}
+
+/* Content block within each section */
+.blog-content-block {
+    text-align: center; /* Centers the text and images within this block */
+    padding: 10px; /* Add padding inside the content block */
+}
+
+/* Styles for responsive images within the new div structure */
+.responsive-image {
+    max-width: 100%; /* Image will scale down if wider than its parent */
+    height: auto;    /* Maintains aspect ratio */
+    display: block;  /* Removes extra space below the image */
+    margin: 0 auto;  /* Centers the image horizontally within the block */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .blog-section {
+        margin: 5px auto; /* Adjust vertical margin for smaller screens */
+        padding: 0 5px; /* Slightly less horizontal padding for more content space */
+    }
+
+    .blog-content-block {
+        padding: 5px; /* Reduce padding inside the content block for smaller screens */
+    }
+
+    h2, h4 { /* Example: Adjust font sizes for better readability on small screens */
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    h2, h4 {
+        font-size: 1em; /* Further adjustment for very small screens */
+    }
+    .blog-section {
+        margin: 3px auto; /* Adjust vertical margin for smaller screens */
+        padding: 0 3px; /* Slightly less horizontal padding for more content space */
+    }
+
+    .blog-content-block {
+        padding: 3px; /* Reduce padding inside the content block for smaller screens */
+    }
+
+    h2, h4 { /* Example: Adjust font sizes for better readability on small screens */
+        font-size: 1.2em;
+    }
+}
+
+
+/* --- Styles for the Blog Header Section --- */
+.blog-section-header {
+    padding: 5px; /* Default padding for larger screens */
+    text-align: center;
+    color: white;
+}
+
+/* --- Styles for the general Blog Content Wrapper (for the second div and similar) --- */
+.blog-content-wrapper {
+    padding: 5px; /* Default padding for larger screens */
+    text-align: center;
+    color: white; /* Assuming these styles are consistent for this wrapper */
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+    .blog-section-header {
+        padding: 3px; /* Reduced padding for tablets and smaller desktops */
+    	text-align: center;
+    	color: white;
+    }
+
+    .blog-content-wrapper {
+        padding: 3px; /* Reduced padding for tablets and smaller desktops */
+    	text-align: center;
+    	color: white;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-section-header {
+        padding: 1px; /* Further reduced padding for mobile phones */
+    	text-align: center;
+    	color: white;
+    }
+
+    .blog-content-wrapper {
+        padding: 1px; /* Further reduced padding for mobile phones */
+    	text-align: center;
+    	color: white;
+    }
+}
+
+/* --- New responsive styles for embedded content --- */
+.iframe-container {
+    position: relative;
+    width: 100%; /* The container will take up the full width available */
+    padding-bottom: 75%; /* Adjust this value to control the aspect ratio (e.g., 56.25% for 16:9, 75% for 4:3) */
+    height: 0;
+    overflow: hidden;
+    margin: 10px 0; /* Add some margin for spacing */
+}
+
+.iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* --- 
+Fixed: To make the <pre> text left-aligned in addition to fixing the overflow, you can add a text-align property to the CSS rule.
+https://g.co/gemini/share/a8e6002c02b7 
+--- */
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all; /* Breaks words at any character to prevent overflow */
+  overflow-x: auto;
+  text-align: left;
+}
+
+.code-font pre { /* Target pre tags specifically within code-font */
+    white-space: pre-wrap; /* Allows long lines to wrap */
+    word-wrap: break-word; /* Ensures long words break */
+    word-break: break-all; /* Breaks words at any character to prevent overflow */
+    overflow-x: auto; /* Adds horizontal scrollbar if wrapping is not enough */
+}
+
+
+.tracking-number {
+    font-size: 10px; /* Adjust the size as needed */
+    text-align: right; /* Aligns text to the right */
+    width: 100%; /* Ensures the div takes the full width */
+    color: #333333; /*This is dark gray text*/
+
+}
+
