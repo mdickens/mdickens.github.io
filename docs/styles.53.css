@@ -628,3 +628,104 @@ pre {
     pointer-events: none; /* Prevents any click events */
 }
 
+
+
+/* --- Hero Section Styling --- */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: 2.8em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.hero .tagline {
+    font-size: 1.5em;
+    color: #00ffff; /* A bright, techy color */
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.hero .cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #007bff; /* A prominent blue */
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.hero .cta-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* --- "How We're Different" Branding Section --- */
+.branding-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin: 40px auto;
+    text-align: center;
+    color: white;
+    max-width: 900px;
+}
+
+.branding-section h2 {
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.brand-item {
+    flex: 1 1 250px; /* Allows items to grow/shrink and wrap */
+    background: rgba(0, 0, 0, 0.5);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.brand-item:hover {
+    transform: translateY(-5px);
+}
+
+.brand-item .icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.brand-item h3 {
+    color: #00ffff;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.brand-item p {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2em;
+    }
+    .hero .tagline {
+        font-size: 1.2em;
+    }
+    .branding-section {
+        flex-direction: column;
+        align-items: center;
+    }
+}
