@@ -667,12 +667,11 @@ pre {
 }
 
 
-
 /* --- "How We're Different" Branding Section --- */
 .branding-section {
-    display: grid; /* Changed from flex to grid */
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Creates a responsive grid of columns */
-    grid-auto-rows: 1fr; /* Ensures all rows have the same height */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: min-content; /* Changed to allow for rows with different heights */
     gap: 30px;
     margin: 40px auto;
     text-align: center;
@@ -689,20 +688,14 @@ pre {
 */
 
 .brand-item {
-    /* Flexbox properties removed as we're now using CSS Grid for the parent */
     background: rgba(0, 0, 0, 0.5);
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
-    /* Added to ensure the content is organized inside the grid item */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.brand-item:hover {
-    transform: translateY(-5px);
 }
 
 /* This is the new class to make an item span the entire row */
@@ -710,6 +703,15 @@ pre {
     grid-column: 1 / -1;
 }
 
+/* This is the new class for a thinner, vertically-centered row */
+.brand-item-thin {
+    padding: 15px 25px; /* Reduced top/bottom padding */
+    justify-content: center; /* Vertically centers the content */
+}
+
+.brand-item:hover {
+    transform: translateY(-5px);
+}
 
 .brand-item .icon {
     font-size: 3em;
@@ -741,4 +743,3 @@ pre {
         grid-template-columns: 1fr;
     }
 }
-
