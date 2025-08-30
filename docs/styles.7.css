@@ -391,6 +391,7 @@ canvas {
 }
 
 .blog-section-header,
+.policy-content-wrapper,
 .blog-content-wrapper {
     padding: 5px;
     text-align: center;
@@ -627,5 +628,65 @@ canvas {
 
     h2, h4 {
         font-size: 1em;
+    }
+}
+
+
+/* Policy Section Styling */
+.policy-section {
+    text-align: left;
+    padding: 40px 20px;
+    color: #000;
+    background: #fff;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.policy-section h2 {
+    color: #000;
+    font-size: 2.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.policy-section h3 {
+    color: #333;
+    font-size: 1.5em;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.policy-section p {
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.policy-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.policy-section li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+/* Responsive adjustments for policy section */
+@media (max-width: 768px) {
+    .policy-section {
+        padding: 30px 15px;
+    }
+
+    .policy-section h2 {
+        font-size: 1.8em;
+    }
+
+    .policy-section h3 {
+        font-size: 1.3em;
     }
 }
