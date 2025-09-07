@@ -1,4 +1,5 @@
 /* Template: ./b46.png */
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -6,7 +7,7 @@
 /* Basic reset and body styling */
 html, body {
     overflow-x: hidden;
-    background-image: url('./b15.png');
+    background-image: url('./bglight.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -90,7 +91,11 @@ header nav a {
     display: flex;
 }
 
+/* NEW: Style for the list item to contain the link and the button */
 .menu li {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Adds a small space between the link and the button */
     margin-left: 20px;
 }
 
@@ -104,6 +109,22 @@ header nav a {
 
 .menu li a:hover {
     background-color: #555;
+}
+
+/* NEW: Style for the toggle button itself to make it look like an icon */
+#mode-toggle {
+    background: none;
+    border: none;
+    color: white; /* Matches the navbar text color */
+    font-size: 1.2em; /* Adjust size as needed */
+    cursor: pointer;
+    padding: 0;
+    line-height: 1; /* Helps with vertical alignment */
+}
+
+/* NEW: Optional: Add a hover effect */
+#mode-toggle:hover {
+    opacity: 0.8;
 }
 
 .hamburger {
@@ -298,8 +319,18 @@ canvas {
     margin-bottom: 5px;
 }
 
-/* Gemini text and container */
-.gemini-text-container {
+/* --- SHARED ANIMATION --- */
+/* This keyframes rule can be used by both styles */
+@keyframes rotateBackground {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- STYLE FOR A DARK BACKGROUND --- */
+/* (This section is unchanged as per your request) */
+/* ---------------------------------------------------------------------- */
+.gemini-container-on-dark {
     background: linear-gradient(135deg, #2b2b4d, #1a1a2e);
     padding: 40px 60px;
     border-radius: 20px;
@@ -310,7 +341,7 @@ canvas {
     overflow: hidden;
 }
 
-.gemini-text-container::before {
+.gemini-container-on-dark::before {
     content: '';
     position: absolute;
     top: -50%;
@@ -322,7 +353,7 @@ canvas {
     z-index: -1;
 }
 
-.gemini-font {
+.gemini-font-on-dark {
     font-family: 'Inter', sans-serif;
     font-size: 1.2em;
     font-weight: 900;
@@ -338,7 +369,7 @@ canvas {
     cursor: default;
 }
 
-.gemini-font:hover {
+.gemini-font-on-dark:hover {
     transform: scale(1.02);
     text-shadow: 0 8px 25px rgba(138, 43, 226, 0.7), 0 0 30px rgba(0, 255, 255, 0.5);
     background: linear-gradient(45deg, #9b4dff, #33ffff, #33ccee);
@@ -348,10 +379,69 @@ canvas {
     text-fill-color: transparent;
 }
 
-@keyframes rotateBackground {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+/* ---------------------------------------------------------------------- */
+/* --- STYLE FOR A LIGHT BACKGROUND (Final) --- */
+/* ---------------------------------------------------------------------- */
+.gemini-container-on-light {
+    background: radial-gradient(circle at center, #f5faff, #e8f0f8);
+    padding: 40px 60px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 90vw;
+    position: relative;
+    overflow: hidden;
 }
+
+.gemini-container-on-light::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(100, 150, 255, 0.08) 0%, transparent 70%);
+    animation: rotateBackground 20s linear infinite;
+    z-index: -1;
+}
+
+.gemini-font-on-light {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2em;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    
+    background: linear-gradient(45deg, #b8a6ff, #a1ffff, #a1d6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    
+    /* A three-layered shadow for clarity, purple glow, and turquoise pop */
+    text-shadow: 
+        1px 1px 1px rgba(0, 0, 0, 0.8), /* Dark shadow for legibility */
+        0 0 12px rgba(138, 43, 226, 0.4), /* Purple glow */
+        -1px -1px 8px rgba(0, 255, 255, 0.6); /* Striking turquoise highlight */
+    
+    transition: all 0.4s ease-in-out;
+    cursor: default;
+}
+
+.gemini-font-on-light:hover {
+    transform: scale(1.02);
+    /* Hover intensifies all three shadow layers for a stronger effect */
+    text-shadow: 
+        2px 2px 2px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(138, 43, 226, 0.6),
+        -2px -2px 12px rgba(0, 255, 255, 0.8);
+    background: linear-gradient(45deg, #c8b6ff, #b1ffff, #b1e6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
 
 .image-container {
     /* To center the container on the page, you can use margin auto */
@@ -456,7 +546,7 @@ canvas {
     text-align: center;
     padding: 60px 20px;
     color: white;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(255,255,255, 0.4);
     border-radius: 10px;
     margin-bottom: 20px;
 }
@@ -560,8 +650,11 @@ canvas {
     .menu.active {
         display: flex;
     }
-
+    
+    /* NEW: Reverts to block display for mobile list items */
     .menu li {
+        display: block;
+        text-align: center;
         margin: 0;
         padding: 15px 0;
         border-bottom: 1px solid #555;
@@ -576,6 +669,11 @@ canvas {
         width: 100%;
     }
 
+    /* You can now add styling for the button on mobile if needed */
+    .menu li button {
+        margin-top: 10px; /* Add some space above the button */
+        /* ... add other mobile button styles ... */
+    }
     .hamburger {
         display: block;
     }
@@ -716,3 +814,235 @@ canvas {
         font-size: 1.3em;
     }
 }
+
+/* ========================================================================= */
+/* 1. Base Styles (Mobile-First Layout) */
+/* ========================================================================= */
+
+/* Page Header Container */
+.page-header-container {
+    background-color: rgba(255, 255, 255, 1.0);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    /* Updated lines below */
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.page-title {
+    font-size: 2.8em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: black; /* Default color for light mode */
+}
+
+.page-subtitle {
+    font-size: 1.5em;
+    font-weight: 300;
+    margin-bottom: 0;
+    color: #001f1f; /* Default color for light mode */
+}
+
+
+.blog-post {
+  margin: 1rem;
+  padding: 1.25rem;
+  border-radius: 8px;
+  /* NO color or background-color here */
+    max-width: 800px; /* NEW: Apply max-width to all screen sizes */
+    margin: 1rem auto; /* NEW: Center the element on all screen sizes */
+}
+
+.blog-post header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.blog-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  /* NO color here */
+}
+.blog-section-title {
+  font-size: 1.0rem;
+  font-weight: bold;
+  line-height: 1.0;
+  margin-bottom: 0.5rem;
+  /* NO color here */
+}
+
+/* ... all your other non-color-related base styles ... */
+
+
+/* ========================================================================= */
+/* 2. Color Schemes */
+/* ========================================================================= */
+
+/* ========================================================================= */
+/* Light Mode (Dark on Light) */
+/* ========================================================================= */
+
+.blog-post {
+  /* Semi-transparent white background */
+  background-color: rgba(255, 255, 255, 0.5);
+  /* A subtle, light shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.blog-title {
+  /* Very dark gray for primary headings */
+  color: #1a1a1a;
+}
+.blog-section-title {
+  /* Very dark gray for primary headings */
+  color: #1a1a1a;
+}
+
+.blog-date {
+  /* A lighter, more subtle gray for the date */
+  color: #5a5a5a;
+}
+
+.blog-meta {
+  /* A medium gray for metadata */
+  color: #7a7a7a;
+}
+
+.blog-meta .blog-tags {
+  /* A slightly lighter gray for tags */
+  color: #9a9a9a;
+}
+
+.blog-content p {
+  /* Very dark gray for main body text */
+  color: #1a1a1a;
+}
+
+.blog-image figcaption {
+  /* A darker gray for image captions */
+  color: #3a3a3a;
+}
+
+/*d ========================================================================= */
+/* Dark Mode (Light on Dark) */
+/* ========================================================================= */
+/* --- Dark Mode Colors (override) --- */
+body.dark-mode .blog-post {
+  /* Semi-transparent dark background */
+  background-color: rgba(25, 25, 25, 0.5); 
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05);
+
+
+}
+
+body.dark-mode .blog-title {
+  color: #f5f5f5;
+}
+body.dark-mode .blog-section-title {
+  color: #f5f5f5;
+}
+
+body.dark-mode .blog-date {
+  color: #b0b0b0;
+}
+
+body.dark-mode .blog-meta {
+  /* A lighter gray for metadata */
+  color: #909090;
+}
+
+body.dark-mode .blog-meta .blog-tags {
+  /* A soft gray for tags */
+  color: #707070;
+}
+
+body.dark-mode .blog-content p {
+  /* A light gray for main body text */
+  color: #d0d0d0;
+}
+
+body.dark-mode .blog-image figcaption {
+  /* A medium gray for image captions */
+  color: #a0a0a0;
+}
+
+/* Header styling */
+body.dark-mode .blog-post header {
+    background-color: #141414;
+}
+
+body.dark-mode .hero {
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Dark Mode Overrides for page Header */
+body.dark-mode .page-header-container {
+    background-color: rgba(25, 25, 25, 1.0);
+}
+
+
+body.dark-mode .page-title {
+    color: #f5f5f5; /* Light text for dark mode */
+}
+
+body.dark-mode .page-subtitle {
+    color: #00ffff;
+}
+
+/* Dark Mode Overrides */
+body.dark-mode {
+    background-image: url('./b46.png'); /* Use your dark mode background image */
+    background-color: #141414; /* Your existing dark mode background color */
+}
+
+/* You might want to remove the background image from the main body rule if you want the dark mode color to be a solid color */
+body.dark-mode html {
+    background-image: url('./b46.png');
+}
+
+/* ========================================================================= */
+/* 3. Media Queries (For larger screens) */
+/* ========================================================================= */
+
+/* For tablets and small desktops */
+@media screen and (min-width: 768px) {
+  /* Layout and sizing adjustments for both modes */
+  .blog-post {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    /* Redefine box-shadow if it's different for large screens */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .blog-post header {
+    margin-bottom: 2rem;
+  }
+
+  .blog-title {
+    font-size: 2.5rem;
+  }
+  .blog-section-title {
+    font-size: 1.5rem;
+  }
+
+  /*
+    Note: You may need to redefine colors for larger screens
+    if they are different. In your case, it looks like only
+    the box-shadow changes.
+  */
+  .blog-post {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light mode specific */
+  }
+
+  body.dark-mode .blog-post {
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1); /* Dark mode specific */
+  }
+}
+
+
+
