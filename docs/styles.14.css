@@ -353,6 +353,32 @@ canvas {
     to { transform: rotate(360deg); }
 }
 
+.image-container {
+    /* To center the container on the page, you can use margin auto */
+    margin-left: auto;
+    margin-right: auto;
+
+    /* These styles round the corners and add the shadow */
+    width: 150px;
+    height: 150px;
+    background-color: #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden; /* This is crucial for rounding the image */
+
+    /* These styles center the image inside the container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    /* This ensures the image takes up the full space of the container */
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 /* Circular image styling */
 .circular-image-container {
     width: 150px;
