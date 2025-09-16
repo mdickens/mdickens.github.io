@@ -13,7 +13,9 @@ function initializeGoogleAnalytics() {
 function setupDarkMode() {
   const toggleButton = document.getElementById('mode-toggle');
   const body = document.body;
-  const geminiFontDiv = document.getElementById('my-toggling-gemini-font');
+  const geminiFontDivs = document.getElementsByClassName('gemini-font-toggling');
+
+
   const darkClass = 'dark-mode';
 
   const moonIcon = '🌙';
@@ -23,10 +25,11 @@ function setupDarkMode() {
     // Toggle the dark-mode class on the body
     body.classList.toggle(darkClass, isDark);
     
-    // Toggle the gemini-font classes on your div
-    if (geminiFontDiv) {
-      geminiFontDiv.classList.toggle('gemini-font-on-dark', isDark);
-      geminiFontDiv.classList.toggle('gemini-font-on-light', !isDark);
+    // Loop through the collection of elements
+    for (let i = 0; i < geminiFontDivs.length; i++) {
+        const div = geminiFontDivs[i];
+        div.classList.toggle('gemini-font-on-dark', isDark);
+        div.classList.toggle('gemini-font-on-light', !isDark);
     }
     
     // Change the button text based on the mode
